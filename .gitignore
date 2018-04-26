@@ -1,0 +1,13 @@
+# package directories
+node_modules
+
+# Serverless directories
+.serverless
+
+# Misc
+*.log
+.DS_Store
+coverage
+dist
+flow-coverage
+tmp
