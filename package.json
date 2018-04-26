@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AWS utils to deploy cloudformation stack/templates",
   "main": "index.js",
+  "repository": "https://github.com/marcincuber/aws-cfm-utils",
   "engines": {
     "node": ">=8.10.0"
   },
