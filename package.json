@@ -1,6 +1,6 @@
 {
   "name": "aws-cfm-utils",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AWS utils to deploy cloudformation stack/templates",
   "main": "index.js",
   "repository": "https://github.com/marcincuber/aws-cfm-utils",
@@ -13,13 +13,15 @@
   "scripts": {
     "build": "rimraf node_modules && npm install",
     "eslint": "eslint .",
-    "eslint-fix": "eslint --fix ."
+    "eslint-fix": "eslint --fix .",
+    "test": "make mocha"
   },
   "author": "Marcin Cuber",
   "license": "UNLICENSED",
   "dependencies": {
     "aws-sdk": "^2.228.1",
     "fs": "0.0.1-security",
+    "path": "^0.12.7",
     "util": "^0.10.3",
     "yargs": "^11.0.0"
   },
@@ -30,6 +32,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "mocha": "^5.1.1"
   }
 }
