@@ -43,8 +43,43 @@ Help: aws-cfm-utils --help //run this will provide examples
     --enable-termination-protection                                      [boolean]
     --version                          Show version number               [boolean]
 
+
 	Examples:
-	aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
+	1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
+    2. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
+    3. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json
+    4. aws-cfm-utils --stack-name mynewstack --template-body test/template.json --stack-policy-body test/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
+
+### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)):
+
+```
+--profile //optional
+--region //optional, defaults to Ireland region eu-west-1
+```
+
+### Used during creation of the stack, otherwise ignored ([create-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html)):
+
+```
+--enable-termination-protection | --no-enable-termination-protection
+--disable-rollback | --no-disable-rollback
+--timeout-in-minutes
+--on-failure
+```
+
+### Used during update of the stack, otherwise ignored ([update-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-stack.html)):
+
+```
+--use-previous-template | --no-use-previous-template]
+--stack-policy-during-update-body
+--stack-policy-during-update-url
+```
+
+## Unit Tests
+
+```
+npm run test
+
+```
 
 ## Requirements and Dependencies
 
