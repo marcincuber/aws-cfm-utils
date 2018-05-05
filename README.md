@@ -1,4 +1,6 @@
 [![Coverage Status](https://codecov.io/gh/marcincuber/aws-cfm-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/marcincuber/aws-cfm-utils)
+[![Build Status](https://travis-ci.org/marcincuber/aws-cfm-utils.svg?branch=master)](https://travis-ci.org/marcincuber/aws-cfm-utils)
+[![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
 
 # AWS CLOUDFORMATION UTILS
 
@@ -71,7 +73,7 @@ Help: aws-cfm-utils --help //run this will provide examples
 ### Used during update of the stack, otherwise ignored ([update-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-stack.html)):
 
 ```
---use-previous-template | --no-use-previous-template]
+--use-previous-template | --no-use-previous-template
 --stack-policy-during-update-body
 --stack-policy-during-update-url
 ```
