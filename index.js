@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const AWS = require('aws-sdk');
-const fs = require('fs');
 
 const { cliopts } = require('./lib/cli_options.js');
 const { processopts } = require('./lib/process_cli_options.js');
@@ -10,8 +9,6 @@ const { describestack } = require('./helpers/cfm_describe_stack.js'); //describe
 const { deletestack } = require('./helpers/cfm_delete_stack.js'); //deletestack(cfm, stackname)
 const { createstack } = require('./helpers/cfm_create_stack.js'); //createstack(cfm, args)
 const { updatestack } = require('./helpers/cfm_update_stack.js'); //updatestack(cfm, args)
-
-const sleep = require('util').promisify(setTimeout);
 
 const cfmclient = (region, profile) => {
   const options = {
@@ -77,7 +74,7 @@ const input_args = process.argv;
 const args = processopts(cliopts(input_args));
 
 // Create AWS.CloudFormation client for specified region/profile
-cfm = cfmclient(args.region, args.profile);
+const cfm = cfmclient(args.region, args.profile);
 
 // Create/Update cloudformation stack using input args and cfm client
 main(cfm, args);

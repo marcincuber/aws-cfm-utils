@@ -14,7 +14,8 @@
     "build": "rimraf node_modules && npm install",
     "eslint": "eslint .",
     "eslint-fix": "eslint --fix .",
-    "test": "make mocha"
+    "test": "make mocha",
+    "coverage": "make coverage"
   },
   "author": "Marcin Cuber",
   "license": "UNLICENSED",
@@ -26,13 +27,15 @@
     "yargs": "^11.0.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0",
-    "rimraf": "^2.6.2",
-    "mocha": "^5.1.1"
+    "istanbul": "^0.4.5",
+    "mocha": "^5.1.1",
+    "rimraf": "^2.6.2"
   }
 }

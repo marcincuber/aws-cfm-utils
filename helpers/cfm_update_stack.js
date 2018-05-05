@@ -2,8 +2,6 @@
 
 const updatestack = async (cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
-  const { opt_params, opt_string, opt_tag } = require('../lib/convert.js');
-
   const sleep = require('util').promisify(setTimeout);
   
   const update_timeout = 3600000; //60 mins
