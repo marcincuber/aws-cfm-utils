@@ -10,4 +10,3 @@ script:
   - npm run test
   - npm run coverage
   - npm run report-coverage
-  - codecov
