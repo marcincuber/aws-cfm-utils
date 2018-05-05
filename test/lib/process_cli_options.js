@@ -83,5 +83,32 @@ describe('processopts', function() {
         ]);
       });
     });
+    describe('capabilities', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'capabilities': [ true ],
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.capabilities, [ true ] );
+      });
+    });
+    describe('enableTerminationProtection', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'enable-termination-protection': true,
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.enableTerminationProtection, true);
+      });
+    });
+    describe('stackPolicyUrl', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'stack-policy-url': 'https://bucket.s3-eu-west-1.amazonaws.com',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.stackPolicyUrl, 'https://bucket.s3-eu-west-1.amazonaws.com');
+      });
+    });
   });
 });
