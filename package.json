@@ -15,7 +15,8 @@
     "eslint": "eslint .",
     "eslint-fix": "eslint --fix .",
     "test": "make mocha",
-    "coverage": "make coverage"
+    "coverage": "make -B coverage",
+    "report-coverage": "cat ./coverage/lcov.info | codecov"
   },
   "author": "Marcin Cuber",
   "license": "UNLICENSED",
