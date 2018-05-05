@@ -1,3 +1,5 @@
+[![Coverage Status](https://codecov.io/gh/marcincuber/aws-cfm-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/marcincuber/aws-cfm-utils)
+
 # AWS CLOUDFORMATION UTILS
 
 ### NPM module to create/update cloudformation stacks
