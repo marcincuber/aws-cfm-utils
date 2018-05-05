@@ -10,28 +10,25 @@ const createstack = async (cfm, args) => {
 
   let data;
   let count = 0;
-  let stack_status = await describestack(cfm, args.stackName);
 
   const params = {
-    StackName: args.stackName
+    StackName: args.stackName,
+    Capabilities: args.capabilities || null,
+    DisableRollback: args.disableRollback || null,
+    EnableTerminationProtection: args.enableTerminationProtection || null,
+    NotificationARNs: args.notificationArns || null,
+    OnFailure: args.onFailure || null,
+    ResourceTypes: args.resourceTypes || null,
+    RoleARN: args.roleArn || null,
+    StackPolicyBody: args.stackPolicyBody || null,
+    StackPolicyURL: args.stackPolicyUrl || null,
+    TemplateBody: args.templateBody || null,
+    TemplateURL: args.templateUrl || null,
+    TimeoutInMinutes: args.timeoutInMinutes || null
   };
 
-  if (args.capabilities !== undefined) {
-    params.Capabilities = args.capabilities;
-  }
-  if (args.disableRollback !== undefined) {
-    params.DisableRollback = args.disableRollback;
-  }
-  if (args.enableTerminationProtection !== undefined) {
-    params.EnableTerminationProtection = args.enableTerminationProtection; 
-  }
-  if (args.notificationArns !== undefined) {
-    params.NotificationARNs = args.notificationArns;
-  }
-  if (args.onFailure !== undefined) {
-    params.OnFailure = args.onFailure;
-  }
   if (args.parameters !== undefined) {
+    console.log(args.parameters);
     params.Parameters = args.parameters.map((parameter) => {
       const ret = {
         ParameterKey: parameter.ParameterKey
@@ -45,32 +42,11 @@ const createstack = async (cfm, args) => {
       return ret;
     });
   }
-  if (args.resourceTypes !== undefined) {
-    params.ResourceTypes = args.resourceTypes;
-  }
-  if (args.roleArn !== undefined) {
-    params.RoleARN = args.roleArn;
-  }
-  if (args.stackPolicyBody !== undefined) {
-    params.StackPolicyBody = args.stackPolicyBody;
-  }
-  if (args.stackPolicyUrl !== undefined) {
-    params.StackPolicyURL = args.stackPolicyUrl;
-  }
   if (args.tags !== undefined) {
     params.Tags = args.tags.map((tag) => ({
       Key: tag.key,
       Value: tag.value
     }));
-  }
-  if (args.templateBody !== undefined) {
-    params.TemplateBody = args.templateBody;
-  }
-  if (args.templateUrl !== undefined) {
-    params.TemplateURL = args.templateUrl;
-  }
-  if (args.timeoutInMinutes !== undefined) {
-    params.TimeoutInMinutes = args.timeoutInMinutes;
   }
 
   try {
@@ -82,7 +58,9 @@ const createstack = async (cfm, args) => {
     process.exit(2);
   }
 
-  while (stack_status == 'CREATE_IN_PROGRESS' || stack_status == 400) {
+  let stack_status = await describestack(cfm, args.stackName);
+
+  while (stack_status === 'CREATE_IN_PROGRESS' || stack_status === 400) {
     count = count++;
     stack_status = await describestack(cfm, args.stackName);
     console.log('CFM stack status: ', stack_status);
@@ -97,7 +75,7 @@ const createstack = async (cfm, args) => {
     }
   }
 
-  if (stack_status != 'CREATE_COMPLETE') {
+  if (stack_status !== 'CREATE_COMPLETE') {
     console.log('Failure - Stack creation unsuccessful!');
     process.exit(1);
   }

@@ -11,7 +11,6 @@ const deletestack = async (cfm, stackname) => {
 
   let data;
   let count = 0;
-  let stack_status = await describestack(cfm, stackname);
 
   const params = {
     StackName: stackname
@@ -33,6 +32,8 @@ const deletestack = async (cfm, stackname) => {
     console.error('Exiting with error: ' + err.stack);
     process.exit(2);
   }
+
+  let stack_status = await describestack(cfm, stackname);
 
   //Wait for stack delete
   while (stack_status != 400) {

@@ -2,6 +2,8 @@
 
 const updatestack = async (cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
+  const { opt_params, opt_string, opt_tag } = require('../lib/convert.js');
+
   const sleep = require('util').promisify(setTimeout);
   
   const update_timeout = 3600000; //60 mins
@@ -10,18 +12,22 @@ const updatestack = async (cfm, args) => {
 
   let data;
   let count = 0;
-  let stack_status = await describestack(cfm, args.stackName);
 
   const params = {
-    StackName: args.stackName
+    StackName: args.stackName,
+    Capabilities: args.capabilities || null,
+    NotificationARNs: args.notificationArns || null,
+    ResourceTypes: args.resourceTypes || null,
+    RoleARN: args.roleArn || null,
+    StackPolicyBody: args.stackPolicyBody || null,
+    StackPolicyDuringUpdateBody: args.stackPolicyDuringUpdateBody || null,
+    StackPolicyDuringUpdateURL: args.stackPolicyDuringUpdateUrl || null,
+    StackPolicyURL: args.stackPolicyUrl || null,
+    TemplateBody: args.templateBody || null,
+    TemplateURL: args.templateUrl || null,
+    UsePreviousTemplate: args.UsePreviousTemplate || null
   };
 
-  if (args.capabilities !== undefined) {
-    params.Capabilities = args.capabilities;
-  }
-  if (args.notificationArns !== undefined) {
-    params.NotificationARNs = args.notificationArns;
-  }
   if (args.parameters !== undefined) {
     params.Parameters = args.parameters.map((parameter) => {
       const ret = {
@@ -36,38 +42,11 @@ const updatestack = async (cfm, args) => {
       return ret;
     });
   }
-  if (args.resourceTypes !== undefined) {
-    params.ResourceTypes = args.resourceTypes;
-  }
-  if (args.roleArn !== undefined) {
-    params.RoleARN = args.roleArn;
-  }
-  if (args.stackPolicyBody !== undefined) {
-    params.StackPolicyBody = args.stackPolicyBody;
-  }
-  if (args.stackPolicyDuringUpdateBody !== undefined) {
-    params.StackPolicyDuringUpdateBody = args.stackPolicyDuringUpdateBody;
-  }
-  if (args.stackPolicyDuringUpdateUrl !== undefined) {
-    params.StackPolicyDuringUpdateURL = args.stackPolicyDuringUpdateUrl;
-  }
-  if (args.stackPolicyUrl !== undefined) {
-    params.StackPolicyURL = args.stackPolicyUrl;
-  }
   if (args.tags !== undefined) {
     params.Tags = args.tags.map((tag) => ({
-      Key: tag.key,
-      Value: tag.value
+      Key: tag.Key,
+      Value: tag.Value
     }));
-  }
-  if (args.templateBody !== undefined) {
-    params.TemplateBody = args.templateBody;
-  }
-  if (args.templateUrl !== undefined) {
-    params.TemplateURL = args.templateUrl;
-  }
-  if (args.UsePreviousTemplate !== undefined) {
-    params.UsePreviousTemplate = args.UsePreviousTemplate;
   }
 
   try {
@@ -83,8 +62,15 @@ const updatestack = async (cfm, args) => {
     process.exit(2);
   }
 
+  let stack_status = await describestack(cfm, args.stackName);
+
   //Wait for stack update
-  while (stack_status == 'UPDATE_IN_PROGRESS' || stack_status == 'CREATE_COMPLETE' || stack_status == 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS') {
+  while (stack_status === 'UPDATE_IN_PROGRESS' || 
+    stack_status === 'CREATE_COMPLETE' || 
+    stack_status === 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS' || 
+    stack_status === 'UPDATE_ROLLBACK_COMPLETE' ||
+    stack_status === 'UPDATE_ROLLBACK_FAILED') {
+    
     count = count++;
     stack_status = await describestack(cfm, args.stackName);
     console.log('CFM stack status: ', stack_status);
