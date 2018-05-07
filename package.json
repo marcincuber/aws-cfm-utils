@@ -16,7 +16,7 @@
     "eslint-fix": "eslint --fix .",
     "test": "make mocha",
     "coverage": "make -B coverage",
-    "report-coverage": "cat ./coverage/lcov.info | codecov"
+    "report-coverage": "cat ./coverage/lcov.info"
   },
   "author": "Marcin Cuber",
   "license": "UNLICENSED",
@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.1",
-    "codecov": "^3.0.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
