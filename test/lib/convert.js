@@ -70,6 +70,40 @@ describe('convert', () => {
         Value: 'value'
       });
     });
+    it('Key=key,Value=\"values,value=1,value=2\"', () => {
+      assert.deepEqual(opt_tag('Key=key,Value=\"values,value=1,value=2\"'), {
+        Key: 'key',
+        Value: 'values,value=1,value=2'
+      });
+    });
+    it('Key=key,Value=\\"values,value=1,value=2\\"', () => {
+      assert.deepEqual(opt_tag('Key=key,Value="values,value=1,value=2"'), {
+        Key: 'key',
+        Value: 'values,value=1,value=2'
+      });
+    });
+    it('Key=s3bucket,Value=s3://bucket_name/....', () => {
+      assert.deepEqual(opt_tag('Key=s3bucket,Value=s3://bucket_name/....'), {
+        Key: 's3bucket',
+        Value: 's3://bucket_name/....'
+      });
+    });
+    it('Key=s3buckets,Value=s3://bucket_name1/....,s3://bucket_name2/....', () => {
+      assert.throws(() => {
+        opt_params('Key=s3buckets,Value=s3://bucket_name1/....,s3://bucket_name2/....')
+      }, Error);
+    });
+    it('Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"', () => {
+      assert.deepEqual(opt_tag('Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"'), {
+        Key: 's3buckets',
+        Value: 's3://bucket_name1/....,s3://bucket_name2/....'
+      });
+    });
+    it('Errors Key=key,Value=values,value=1,value=2', () => {
+      assert.throws(() => {
+        opt_params('Key=key,Value=values,value=1,value=2')
+      }, Error);
+    });
     it('Key=key,Unexpected=value', () => {
       assert.throws(() => {
         opt_tag('Key=key,Unexpected=value');
