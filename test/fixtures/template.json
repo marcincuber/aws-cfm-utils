@@ -23,6 +23,14 @@
       "Default": "t2.micro",
       "AllowedValues": ["t2.micro", "m4.small", "m4.medium", "m4.large"],
       "ConstraintDescription": "must be a valid and allowed EC2 instance type."
+    },
+    "TestName": {
+      "Description": "TestName",
+      "Type": "String"
+    },
+    "TestName2":{
+      "Description": "TestName2",
+      "Type": "String"
     }
   },
 
@@ -251,7 +259,7 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "VpcId": { "Ref": "VPC" },
-        "CidrBlock": "10.0.30.0/24",
+        "CidrBlock": "10.0.3.0/24",
         "AvailabilityZone": {
           "Fn::Select": ["1", { "Fn::GetAZs": { "Ref": "AWS::Region" } }]
         },

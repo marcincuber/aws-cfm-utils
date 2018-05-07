@@ -1,0 +1,10 @@
+[
+  {
+    "Key": "TestTag1",
+    "Value": "TestTagValue1"
+  },
+   {
+    "Key": "TestTag2",
+    "Value": "TestTagValue2"
+  }
+]

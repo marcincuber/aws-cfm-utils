@@ -1,3 +1,9 @@
+[![Coverage Status](https://codecov.io/gh/marcincuber/aws-cfm-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/marcincuber/aws-cfm-utils)
+[![Build Status](https://travis-ci.org/marcincuber/aws-cfm-utils.svg?branch=master)](https://travis-ci.org/marcincuber/aws-cfm-utils)
+[![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
+[![npm version](https://badge.fury.io/js/aws-cfm-utils.svg)](https://badge.fury.io/js/aws-cfm-utils)
+[![NPM dependencies](https://david-dm.org/marcincuber/aws-cfm-utils.png)](https://david-dm.org/marcincuber/aws-cfm-utils)
+
 # AWS CLOUDFORMATION UTILS
 
 ### NPM module to create/update cloudformation stacks
@@ -16,18 +22,70 @@ Usage: aws-cfm-utils [options]
 Help: aws-cfm-utils --help //run this will provide examples
 ```
 
-	Options:
-	-n, --name         AWS stack name                          [string] [required]
- 	-t, --template     CFM template file name                  [string] [required]
-  	-p, --stackpolicy  Stack policy file name                  [string] [required]
-  	-k, --accesskeyid  Your AWS access key                                [string]
-  	-s, --secretkey    Your AWS secret key                                [string]
-  	-h, --help         Show help                                         [boolean]
-  	-v, --version      Show version number                               [boolean]
+    Options:
+    --stack-name                                               [string] [required]
+    --template-body                    CFM template file name             [string]
+    --stack-policy-body                Stack policy file name             [string]
+    --accesskeyid                      AWS access key                     [string]
+    --secretkey                        AWS secret key                     [string]
+    -h, --help                         Show help                         [boolean]
+    --parameters                       CFM Parameters                      [array]
+    --tags                             CFM Tags                            [array]
+    --region                                       [string] [default: "eu-west-1"]
+    --capabilities     [array] [choices: "CAPABILITY_NAMED_IAM", "CAPABILITY_IAM"]
+    --profile                                                             [string]
+    --role-arn                                                            [string]
+    --resource-types                                                       [array]
+    --disable-rollback                                                   [boolean]
+    --template-url                                                        [string]
+    --stack-policy-url                                                    [string]
+    --notification-arns                                                    [array]
+    --timeout-in-minutes                                                  [number]
+    --on-failure            [string] [choices: "DO_NOTHING", "ROLLBACK", "DELETE"]
+    --use-previous-template                                              [boolean]
+    --stack-policy-during-update-body                                     [string]
+    --stack-policy-during-update-url                                      [string]
+    --wait                                                               [boolean]
+    --enable-termination-protection                                      [boolean]
+    --version                          Show version number               [boolean]
+
 
 	Examples:
-	aws-cfm-utils -n stackname -t cfmtemplate -p stackpolicy     
-  	aws-cfm-utils --name stackname --template cfmtemplate --stackpolicy stackpolicy
+	1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
+    2. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
+    3. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json
+    4. aws-cfm-utils --stack-name mynewstack --template-body test/template.json --stack-policy-body test/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
+
+### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)):
+
+```
+--profile //optional
+--region //optional, defaults to Ireland region eu-west-1
+```
+
+### Used during creation of the stack, otherwise ignored ([create-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html)):
+
+```
+--enable-termination-protection | --no-enable-termination-protection
+--disable-rollback | --no-disable-rollback
+--timeout-in-minutes
+--on-failure
+```
+
+### Used during update of the stack, otherwise ignored ([update-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-stack.html)):
+
+```
+--use-previous-template | --no-use-previous-template
+--stack-policy-during-update-body
+--stack-policy-during-update-url
+```
+
+## Unit Tests
+
+```
+npm run test
+
+```
 
 ## Requirements and Dependencies
 
