@@ -51,7 +51,7 @@ Version: aws-cfm-utils --version
     --stack-policy-during-update-url                                      [string]
     --wait                                                               [boolean]
     --enable-termination-protection                                      [boolean]
-    --version                          Show version number               [boolean]
+    -v, --version                      Show version number               [boolean]
 
 ### Examples:
 
