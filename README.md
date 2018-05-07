@@ -21,7 +21,9 @@ npm install -g
 ```
 Usage: aws-cfm-utils [options]
 
-Help: aws-cfm-utils --help //run this will provide examples
+Help: aws-cfm-utils --help
+
+Version: aws-cfm-utils --version
 ```
 
     Options:
