@@ -28,6 +28,29 @@ describe('convert', () => {
         opt_params('ParameterKey=key,Unexpected=value');
       }, Error);
     });
+    it('ParameterKey=subnet,ParameterValue=\\"subnet1,subnet2,subnet3\\"', () => {
+      assert.deepEqual(opt_params('ParameterKey=subnet,ParameterValue=\"subnet1,subnet2,subnet3\"'), {
+        ParameterKey: 'subnet',
+        ParameterValue: 'subnet1,subnet2,subnet3'
+      });
+    });
+    it('ParameterKey=subnet,ParameterValue="subnet1,subnet2,subnet3"', () => {
+      assert.deepEqual(opt_params('ParameterKey=subnet,ParameterValue="subnet1,subnet2,subnet3"'), {
+        ParameterKey: 'subnet',
+        ParameterValue: 'subnet1,subnet2,subnet3'
+      });
+    });
+    it('Errors ParameterKey=subnet,ParameterValue=subnet1,subnet2,subnet3', () => {
+      assert.throws(() => {
+        opt_params('ParameterKey=subnet,ParameterValue=subnet1,subnet2,subnet3')
+      }, Error);
+    });
+    it('ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\"', () => {
+      assert.deepEqual(opt_params('ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\"'), {
+        ParameterKey: 'vpc',
+        ParameterValue: 'vpcid=12345,vpceid=12345'
+      });
+    });
   });
   describe('tag', () => {
     it('Key=key,Value=value', () => {

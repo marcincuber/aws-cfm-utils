@@ -28,6 +28,7 @@ const updatestack = async (cfm, args) => {
 
   if (args.parameters !== undefined) {
     params.Parameters = args.parameters.map((parameter) => {
+      console.log('parameter: ' + parameter.ParameterKey + ' ' + parameter.ParameterValue);
       const ret = {
         ParameterKey: parameter.ParameterKey
       };
