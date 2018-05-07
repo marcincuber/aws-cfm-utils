@@ -88,9 +88,15 @@ describe('convert', () => {
         Value: 's3://bucket_name/....'
       });
     });
+    it('Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"', () => {
+      assert.deepEqual(opt_tag('Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"'), {
+        Key: 's3bucket',
+        Value: 'S3link=s3://bucket_name/....,S3name=bucket_name'
+      });
+    });
     it('Key=s3buckets,Value=s3://bucket_name1/....,s3://bucket_name2/....', () => {
       assert.throws(() => {
-        opt_params('Key=s3buckets,Value=s3://bucket_name1/....,s3://bucket_name2/....')
+        opt_tag('Key=s3buckets,Value=s3://bucket_name1/....,s3://bucket_name2/....')
       }, Error);
     });
     it('Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"', () => {
@@ -101,7 +107,7 @@ describe('convert', () => {
     });
     it('Errors Key=key,Value=values,value=1,value=2', () => {
       assert.throws(() => {
-        opt_params('Key=key,Value=values,value=1,value=2')
+        opt_tag('Key=key,Value=values,value=1,value=2')
       }, Error);
     });
     it('Key=key,Unexpected=value', () => {
