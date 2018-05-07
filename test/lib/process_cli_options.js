@@ -110,5 +110,41 @@ describe('processopts', function() {
         assert.deepEqual(argv.stackPolicyUrl, 'https://bucket.s3-eu-west-1.amazonaws.com');
       });
     });
+    describe('templateUrl', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'template-url': 'https://bucket.s3-eu-west-1.amazonaws.com',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.templateUrl, 'https://bucket.s3-eu-west-1.amazonaws.com');
+      });
+    });
+    describe('notificationArns', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'notification-arns': [ 'arn:aws:sns:eu-west-1:123456789012:example-topic' ],
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.notificationArns, [ 'arn:aws:sns:eu-west-1:123456789012:example-topic' ]);
+      });
+    });
+    describe('resourceTypes', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'resource-types': [ 'AWS::EC2::Instance', 'AWS::EC2::Resource' ],
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.resourceTypes, [ 'AWS::EC2::Instance', 'AWS::EC2::Resource' ]);
+      });
+    });
+    describe('timeoutInMinutes', function() {
+      it('handles as positive int', function() {
+        const argv = processopts({
+          'timeout-in-minutes': 1,
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.timeoutInMinutes, 1);
+      });
+    });
   });
 });
