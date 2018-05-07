@@ -3,6 +3,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
 [![npm version](https://badge.fury.io/js/aws-cfm-utils.svg)](https://badge.fury.io/js/aws-cfm-utils)
 [![NPM dependencies](https://david-dm.org/marcincuber/aws-cfm-utils.png)](https://david-dm.org/marcincuber/aws-cfm-utils)
+[![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
 
 # AWS CLOUDFORMATION UTILS
 
