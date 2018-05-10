@@ -3,6 +3,8 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
 [![npm version](https://badge.fury.io/js/aws-cfm-utils.svg)](https://badge.fury.io/js/aws-cfm-utils)
 [![NPM dependencies](https://david-dm.org/marcincuber/aws-cfm-utils.png)](https://david-dm.org/marcincuber/aws-cfm-utils)
+[![David](https://img.shields.io/david/dev/expressjs/express.svg)](https://www.npmjs.com/package/aws-cfm-utils)
+[![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
 
 # AWS CLOUDFORMATION UTILS
 
@@ -19,7 +21,9 @@ npm install -g
 ```
 Usage: aws-cfm-utils [options]
 
-Help: aws-cfm-utils --help //run this will provide examples
+Help: aws-cfm-utils --help
+
+Version: aws-cfm-utils --version
 ```
 
     Options:
@@ -47,14 +51,31 @@ Help: aws-cfm-utils --help //run this will provide examples
     --stack-policy-during-update-url                                      [string]
     --wait                                                               [boolean]
     --enable-termination-protection                                      [boolean]
-    --version                          Show version number               [boolean]
+    -v, --version                      Show version number               [boolean]
 
+### Examples:
 
-	Examples:
-	1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
-    2. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
-    3. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json
-    4. aws-cfm-utils --stack-name mynewstack --template-body test/template.json --stack-policy-body test/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
+```
+1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
+
+2. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
+    
+3. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json
+    
+4. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
+
+// More complicated ParameterValues in the following two examples, ensure to escape double quotes
+5. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2
+
+6. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2
+
+// More complicated TagValue in the following two examples, ensure to escape double quotes
+7. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=TestTag,Value=TestTagValue Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"
+
+8. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"
+```
+
+In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensure your values include all the special characters.
 
 ### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)):
 
@@ -85,6 +106,12 @@ Help: aws-cfm-utils --help //run this will provide examples
 ```
 npm run test
 
+```
+
+## Coverage
+
+```
+npm run coverage
 ```
 
 ## Requirements and Dependencies
