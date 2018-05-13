@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+'use strict';
 
 const prexit = async (cfm, stackname) => {
   const { describestack } = require('./helpers/cfm_describe_stack.js');
@@ -32,8 +32,7 @@ const prexit = async (cfm, stackname) => {
 
     while (stack_status === 'UPDATE_IN_PROGRESS' || 
     stack_status === 'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS' ||
-    stack_status === 'UPDATE_ROLLBACK_IN_PROGRESS' ||
-    stack_status === 'UPDATE_ROLLBACK_FAILED') {
+    stack_status === 'UPDATE_ROLLBACK_IN_PROGRESS') {
       
       count = count++;
       stack_status = await describestack(cfm, stackname);
@@ -50,6 +49,10 @@ const prexit = async (cfm, stackname) => {
     if (stack_status === 'UPDATE_ROLLBACK_COMPLETE') {
       console.log('Rollback Completed. Exiting.');
     }
+    if (stack_status === 'UPDATE_ROLLBACK_FAILED') {
+      console.log('Rollback Failed! Exiting.');
+    }
+
   };
 
   // Catch exit

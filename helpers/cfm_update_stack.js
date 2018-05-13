@@ -81,7 +81,7 @@ const updatestack = async (cfm, args) => {
     else {
       if (args.stackEvents === true) {
         stack_events = await returnstackevents(cfm, args.stackName, process_start_timestamp);
-        console.table('Stack Events for stack: ' + args.stackName, stack_events);
+        console.table('\n' + 'Stack Events for stack: ' + args.stackName, stack_events);
       }
 
       console.log('Waiting...');

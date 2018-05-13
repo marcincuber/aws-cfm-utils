@@ -46,7 +46,7 @@ const main = async (cfm, args) => {
         await updatestack(cfm, args);
         break;
       case 'CREATE_FAILED':
-        await deletestack(cfm, args.stackName);
+        await deletestack(cfm, args);
         await createstack(cfm, args);
         break;
       default:
@@ -69,7 +69,6 @@ const main = async (cfm, args) => {
     }
   }
 };
-
 
 // Collect and transform input options
 const input_args = process.argv;
