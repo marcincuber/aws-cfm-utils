@@ -51,7 +51,6 @@ Version: aws-cfm-utils --version
     --use-previous-template                                              [boolean]
     --stack-policy-during-update-body                                     [string]
     --stack-policy-during-update-url                                      [string]
-    --wait                                                               [boolean]
     --enable-termination-protection                                      [boolean]
     --stack-events                                                       [boolean]
     -v, --version                      Show version number               [boolean]

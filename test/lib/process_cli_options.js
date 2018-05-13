@@ -300,22 +300,6 @@ describe('processopts', function() {
         assert.deepEqual(argv.region, 'eu-west-1');
       });
     });
-    describe('wait', function() {
-      it('handles as args', function() {
-        const argv = processopts({
-          'wait': true,
-          'stack-name': 'name'
-        });
-        assert.deepEqual(argv.wait, true);
-      });
-      it('handles as empty', function() {
-        const argv = processopts({
-          'wait': '',
-          'stack-name': 'name'
-        });
-        assert.deepEqual(argv.wait, false);
-      });
-    });
     describe('template-body', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
