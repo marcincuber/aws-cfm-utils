@@ -136,6 +136,12 @@ npm run test
 
 ```
 
+## Eslint
+
+```
+npm run eslint
+```
+
 ## Coverage
 
 ```
@@ -152,6 +158,8 @@ npm run coverage
 2. fs
 3. util
 4. yargs
+5. path
+6. console.table
 
 ## Disclaimer
 _The SOFTWARE PACKAGE provided in this page is provided "as is", without any guarantee made as to its suitability or fitness for any particular use. It may contain bugs, so use of this tool is at your own risk. We take no responsibility for any damage of any sort that may unintentionally be caused through its use._

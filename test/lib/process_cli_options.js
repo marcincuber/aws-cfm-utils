@@ -1,7 +1,13 @@
 'use strict';
 
 const assert = require('assert');
+const sinon = require('sinon');
 const { processopts } = require('../../lib/process_cli_options.js');
+
+before(() => {
+  sinon.stub(console, 'error').callsFake((warning) => { throw new Error(warning) })
+});
+after(() => console.error.restore());
 
 describe('processopts', () => {
   describe('proccess cli options', () => {
@@ -82,6 +88,22 @@ describe('processopts', () => {
           { Key: 'TestTag2', Value: 'TestTagValue2' }
         ]);
       });
+      it('handles as empty array', () => {
+        assert.throws(() => {
+          processopts({
+            tags: []
+          });
+        }, Error);
+      });
+      it('handles missing value inside array', () => {
+        assert.throws(() => {
+          processopts({
+            tags: [
+            '[{"Key": "TestTag1","Value":"TestTagValue1"}, {"Key"}]'
+            ]
+          });
+        }, Error);
+      });
     });
     describe('capabilities', () => {
       it('handles as args', () => {
@@ -117,6 +139,21 @@ describe('processopts', () => {
         assert.deepEqual(argv.disableRollback, true);
       });
     });
+    describe('stackName', () => {
+      it('handles as args', () => {
+        const argv = processopts({
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.stackName, 'name');
+      });
+      it('error with empty stack-name', () => {
+        assert.throws(() => {
+          processopts({
+            'stack-name': ''
+          });
+        }, Error);
+      });
+    });
     describe('stackPolicyUrl', () => {
       it('handles as args', () => {
         const argv = processopts({
@@ -142,6 +179,13 @@ describe('processopts', () => {
           'stack-name': 'name'
         });
         assert.deepEqual(argv.notificationArns, [ 'arn:aws:sns:eu-west-1:123456789012:example-topic' ]);
+      });
+      it('handles as empty array', () => {
+        assert.throws(() => {
+          processopts({
+            'notification-arns': []
+          });
+        }, Error);
       });
     });
     describe('roleArn', () => {
@@ -169,6 +213,14 @@ describe('processopts', () => {
           'stack-name': 'name'
         });
         assert.deepEqual(argv.timeoutInMinutes, 1);
+      });
+      it('handles as negative int', () => {
+        assert.throws(() => {
+          processopts({
+            'timeout-in-minutes': -1,
+            'stack-name': 'name'
+          });
+        }, Error);
       });
     });
     describe('onFailure', () => {
@@ -232,6 +284,17 @@ describe('processopts', () => {
         assert.deepEqual(argv.wait, false);
       });
     });
+    describe('template-body', () => {
+      it('handles as JSON file', () => {
+        const argv = processopts({
+          'template-body': [
+            '../../../test/fixtures/short-template-body.json'
+          ]
+        });
+        assert.deepEqual(argv.templateBody, '{\n  \"AWSTemplateFormatVersion\": \"2010-09-09\",\n  \"Parameters\": {\n    \"KeyName\": {\n      \"Default\": \"TNLDefault\"\n    },\n    \"TestName\": {\n      \"Description\": \"TestName\",\n      \"Type\": \"String\"\n    },\n    \"TestName2\":{\n      \"Description\": \"TestName2\",\n      \"Type\": \"String\"\n    }\n  },\n  \"Mappings\": {\n    \"AWSNATAMI\": {\n      \"eu-west-1\": { \"AMI\": \"ami-785db401\" }\n    },\n    \"AWSRegionArch2AMI\": {\n      \"eu-west-1\": { \"64\": \"ami-785db401\" }\n    }\n  }\n}\n'
+        );
+      });
+    });
     describe('stack-events', () => {
       it('handles as args', () => {
         const argv = processopts({
@@ -246,6 +309,28 @@ describe('processopts', () => {
           'stack-name': 'name'
         });
         assert.deepEqual(argv.stackEvents, false);
+      });
+    });
+    describe('stack-policy-during-update-body', () => {
+      it('handles as JSON file', () => {
+        const argv = processopts({
+          'stack-policy-during-update-body': [
+            '../../../test/fixtures/stackpolicy.json'
+          ]
+        });
+        assert.deepEqual(argv.stackPolicyDuringUpdateBody, '{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n'
+        );
+      });
+    });
+    describe('stack-policy-body', () => {
+      it('handles as JSON file', () => {
+        const argv = processopts({
+          'stack-policy-body': [
+            '../../../test/fixtures/stackpolicy.json'
+          ]
+        });
+        assert.deepEqual(argv.stackPolicyBody, '{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n'
+        );
       });
     });
   });
