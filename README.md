@@ -1,3 +1,6 @@
+# AWS CLOUDFORMATION UTILS
+## NPM module to create and/or update cloudformation stacks
+
 [![Coverage Status](https://codecov.io/gh/marcincuber/aws-cfm-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/marcincuber/aws-cfm-utils)
 [![Build Status](https://travis-ci.org/marcincuber/aws-cfm-utils.svg?branch=master)](https://travis-ci.org/marcincuber/aws-cfm-utils)
 [![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
@@ -8,18 +11,37 @@
 [![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_shield)
 
+# Table of Contents
 
-# AWS CLOUDFORMATION UTILS
+* [Installation](#installation)
+* [Usage](#usage)
+* [CLI Options](#cli-options)
+    * [CLI Examples](#cli-examples)
+* [Parameter Options](#parameter-options)
+    * [Global Parameters](#global-parameters)
+    * [Create Stack Parameters](#create-stack-parameters)
+    * [Upadte Stack Parameters](#update-stack-parameters)
+    * [Additional Stack Parameters](#additional-stack-parameters)
+    * [AWS Credential Info](#credentials)
+* [Tests](#tests)
+    * [Unit Tests](#unit-tests)
+    * [Linting](#eslint)
+    * [Node Modules security](#nsp)
+    * [Coverage](#coverage)
+    * [Build Server](#build-server)
+    * [Software License Scanning](#license-scan)
+* [Requirements and Dependencies](#requirements-dependencies)
+    * [Dependencies](#prod-dependencies)
+    * [DevDependencies](#dev-dependencies)
+* [Contact](#contact)
 
-### NPM module to create/update cloudformation stacks
-
-## Installation
+## Installation <a name="installation"></a>
 
 ```
 npm install -g aws-cfm-utils
 ```
 
-## Usage
+## Usage <a name="usage"></a>
 
 ```
 Usage: aws-cfm-utils [options]
@@ -29,13 +51,15 @@ Help: aws-cfm-utils --help
 Version: aws-cfm-utils --version
 ```
 
-    Options:
+## CLI Options <a name="cli-options"></a>
+
+```
+  Options:
     --stack-name                                               [string] [required]
     --template-body                    CFM template file name             [string]
     --stack-policy-body                Stack policy file name             [string]
     --accesskeyid                      AWS access key                     [string]
     --secretkey                        AWS secret key                     [string]
-    -h, --help                         Show help                         [boolean]
     --parameters                       CFM Parameters                      [array]
     --tags                             CFM Tags                            [array]
     --region                                       [string] [default: "eu-west-1"]
@@ -55,8 +79,10 @@ Version: aws-cfm-utils --version
     --enable-termination-protection                                      [boolean]
     --stack-events                                                       [boolean]
     -v, --version                      Show version number               [boolean]
+    -h, --help                         Show help                         [boolean]
+```
 
-### Examples:
+### CLI Examples <a name="cli-examples"></a>
 
 ```
 1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
@@ -86,7 +112,9 @@ Version: aws-cfm-utils --version
 
 In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensure your values include all the special characters.
 
-### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)):
+## Parameter Options <a name="parameter-options"></a>
+
+### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)): <a name="global-parameters"></a>
 
 ```
 --accesskeyid 
@@ -97,7 +125,7 @@ In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensur
 
 Note: you can either specify `profile` value or `accesskeyid` && `secretkey`. Otherwise error is returned. More about credential in `Credential settings` section.
 
-### Used during creation of the stack, otherwise ignored ([create-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html)):
+### Used during creation of the stack, otherwise ignored ([create-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html)): <a name="create-stack-parameters"></a>
 
 ```
 --enable-termination-protection | --no-enable-termination-protection
@@ -106,7 +134,7 @@ Note: you can either specify `profile` value or `accesskeyid` && `secretkey`. Ot
 --on-failure
 ```
 
-### Used during update of the stack, otherwise ignored ([update-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-stack.html)):
+### Used during update of the stack, otherwise ignored ([update-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-stack.html)): <a name="update-stack-parameters"></a>
 
 ```
 --use-previous-template | --no-use-previous-template
@@ -114,7 +142,7 @@ Note: you can either specify `profile` value or `accesskeyid` && `secretkey`. Ot
 --stack-policy-during-update-url
 ```
 
-### Addional Custom options for update-stack and create-stack 
+### Addional Custom options for update-stack, create-stack and delete-stack: <a name="additional-stack-parameters"></a>
 
 In order to see all the `CloudFormation Stack Events` happening during update/create process. Use the following option;
 
@@ -141,9 +169,10 @@ Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTabl
 ...
 ```
 
-## Credential settings, General order of execution
+### Credential settings, General order of execution <a name="credentials"></a>
 
 The AWS CLI looks for credentials and configuration settings in the following order:
+
 1. Command line options – region, output format and profile can be specified as command options to override default settings.
 2. Environment variables – AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN.
 3. The AWS credentials file – located at ~/.aws/credentials on Linux, macOS, or Unix, or at C:\Users\USERNAME \.aws\credentials on Windows. This file can contain multiple named profiles in addition to a default profile.
@@ -151,30 +180,56 @@ The AWS CLI looks for credentials and configuration settings in the following or
 5. Container credentials – provided by Amazon Elastic Container Service on container instances when you assign a role to your task.
 6. Instance profile credentials – these credentials can be used on EC2 instances with an assigned instance role, and are delivered through the Amazon EC2 metadata service.
 
-## Unit Tests
+## Tests etc. <a name="tests"></a>
+
+### Unit Tests <a name="unit-tests"></a>
 
 ```
 npm run test
 
 ```
 
-## Eslint
+### Eslint <a name="eslint"></a>
 
 ```
 npm run lint
 ```
 
-## Coverage
+### Node Modules security <a name="nsp"></a>
+
+We use tool called `Snyk.io` to scan node moduless. [See Snyk.io](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json) 
+
+### Code Coverage <a name="coverage"></a>
+
+Locally execute:
 
 ```
 npm run coverage
 ```
 
-## Requirements and Dependencies
+Otherwise, `Codecov` is used to publish coverage results. [See Codecov](https://codecov.io/gh/marcincuber/aws-cfm-utils).
+
+Codecov is uploading coverage tests to PRs directly compering it against master branch.
+
+### Build Server <a name="build-server"></a>
+
+Travis is used to build and test the npm module. [See Travis](https://travis-ci.org/marcincuber/aws-cfm-utils).
+
+Travis is currently building, testing and populating results of the tests. In the future it will be publishing NPM module on merge to master.
+
+### Software License Scanning <a name="license-scan"></a>
+
+We use `FOSSA` system which helps us manage components. It is used to perform dynamic & static build analysis on code to help understand the open source components and stay compliant with software licenses. It is providing feedback on every PR so that we can say up-to-date with new issues, if any.
+
+[See FOSSA Portal](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils/refs/branch/master/bdf7145348b664c761c6a5c810dc984314a473c0)
+
+[License Status](#license-status)
+
+## Requirements and Dependencies <a name="requirements-dependencies"></a>
 
 1. NODE version >= 8.10
 
-## Dependencies
+### Dependencies <a name="prod-dependencies"></a>
 
 1. aws-sdk
 2. fs
@@ -183,11 +238,27 @@ npm run coverage
 5. path
 6. console.table
 
-## Contacts
+[See Dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils)
+
+### DevDependencies <a name="dev-dependencies"></a>
+
+1. coveralls
+2. eslint
+3. eslint-config-standard
+4. eslint-plugin-import
+5. eslint-plugin-node
+6. eslint-plugin-promise
+7. eslint-plugin-standard
+8. istanbul
+9. mocha
+10. sinon
+
+[See DevDependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils?type=dev)
+
+## Contact <a name="contact"></a>
 
 If you have any questions, drop me an email marcincuber@hotmail.com or open an issue and leave stars! :)
 
 
-
-## License
+## License Status <a name="license-status"></a>
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_large)
