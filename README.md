@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/marcincuber/aws-cfm-utils.svg?branch=master)](https://travis-ci.org/marcincuber/aws-cfm-utils)
 [![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
 [![npm version](https://badge.fury.io/js/aws-cfm-utils.svg)](https://badge.fury.io/js/aws-cfm-utils)
+[![node](https://img.shields.io/node/v/aws-cfm-utils.svg)](https://github.com/marcincuber/aws-cfm-utils)
 [![dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils/status.svg)](https://david-dm.org/marcincuber/aws-cfm-utils)
 [![devDependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils/dev-status.svg)](https://david-dm.org/marcincuber/aws-cfm-utils?type=dev)
 [![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
@@ -160,7 +161,7 @@ npm run test
 ## Eslint
 
 ```
-npm run eslint
+npm run lint
 ```
 
 ## Coverage
@@ -185,3 +186,8 @@ npm run coverage
 ## Contacts
 
 If you have any questions, drop me an email marcincuber@hotmail.com or open an issue and leave stars! :)
+
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_large)
