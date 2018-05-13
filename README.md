@@ -5,6 +5,7 @@
 [![NPM dependencies](https://david-dm.org/marcincuber/aws-cfm-utils.png)](https://david-dm.org/marcincuber/aws-cfm-utils)
 [![David](https://img.shields.io/david/dev/expressjs/express.svg)](https://www.npmjs.com/package/aws-cfm-utils)
 [![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_shield)
 
 # AWS CLOUDFORMATION UTILS
 
@@ -131,3 +132,7 @@ _The SOFTWARE PACKAGE provided in this page is provided "as is", without any gua
 ## Contacts
 
 If you have any questions, drop an email to marcincuber@hotmail.com and leave stars! :)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_large)
