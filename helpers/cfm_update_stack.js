@@ -2,15 +2,20 @@
 
 const updatestack = async (cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
+  const { describestackevents, returnstackevents } = require('./cfm_describe_stack_events.js');
   const sleep = require('util').promisify(setTimeout);
+  const cTable = require('console.table');
   
   const update_timeout = 3600000; //60 mins
+  const process_start_timestamp = new Date().toISOString();
 
   console.log('Updating stack: ' + args.stackName);
 
   let data;
+  let stack_events;
   let count = 0;
 
+  
   const params = {
     StackName: args.stackName,
     Capabilities: args.capabilities || null,
@@ -76,7 +81,13 @@ const updatestack = async (cfm, args) => {
     if (count > update_timeout * 60 / 10) {
       console.log('Aborting - Timeout while updating');
       process.exit(1);
-    } else {
+    } 
+    else {
+      if (args.stackEvents === true) {
+        let stack_events = await returnstackevents(cfm, args.stackName, process_start_timestamp);
+        console.table('Stack Events for stack: ' + args.stackName, stack_events);
+      }
+
       console.log('Waiting...');
       await sleep(15000); //15 sec
     }

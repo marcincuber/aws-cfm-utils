@@ -17,7 +17,7 @@ describe('arg', () => {
       assert.equal(argv['stack-name'], 'name');
     });
     it('common', () => {
-      const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
+      const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', '--stack-events', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
       assert.equal(argv['stack-name'], 'name');
       assert.equal(argv['template-url'], 'url');
       assert.deepEqual(argv.parameters, ['ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value']);
@@ -26,6 +26,7 @@ describe('arg', () => {
       assert.equal(argv['role-arn'], 'arn');
       assert.equal(argv['stack-policy-url'], 'url');
       assert.deepEqual(argv['notification-arns'], ['arn1', 'arn2']);
+      assert.equal(argv['stack-events'], true);
     });
     describe('create', () => {
       it('create', () => {
@@ -64,6 +65,7 @@ describe('arg', () => {
         assert.equal(argv['use-previous-template'], undefined);
         assert.equal(argv['stack-policy-during-update-body'], 'body');
         assert.equal(argv['stack-policy-during-update-url'], 'url');
+        assert.equal(argv['stack-events'], undefined);
       });
       it('--use-previous-template', () => {
         const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--use-previous-template']);

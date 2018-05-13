@@ -232,5 +232,21 @@ describe('processopts', () => {
         assert.deepEqual(argv.wait, false);
       });
     });
+    describe('stack-events', () => {
+      it('handles as args', () => {
+        const argv = processopts({
+          'stack-events': true,
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.stackEvents, true);
+      });
+      it('handles as empty', () => {
+        const argv = processopts({
+          'stack-events': '',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.stackEvents, false);
+      });
+    });
   });
 });

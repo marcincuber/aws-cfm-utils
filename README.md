@@ -51,6 +51,7 @@ Version: aws-cfm-utils --version
     --stack-policy-during-update-url                                      [string]
     --wait                                                               [boolean]
     --enable-termination-protection                                      [boolean]
+    --stack-events                                                       [boolean]
     -v, --version                      Show version number               [boolean]
 
 ### Examples:
@@ -72,7 +73,7 @@ Version: aws-cfm-utils --version
 // More complicated TagValue in the following two examples, ensure to escape double quotes
 7. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=TestTag,Value=TestTagValue Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"
 
-8. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"
+8. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\" --stack-events
 ```
 
 In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensure your values include all the special characters.
@@ -100,6 +101,34 @@ In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensur
 --stack-policy-during-update-body
 --stack-policy-during-update-url
 ```
+
+### Addional Custom options
+
+In order to see all of the `CloudFormation Stack Events` happening during update/create pass in the following option;
+
+```
+--stack-events // if not specified only stack status is shown
+```
+
+Example log output when `--stack-events` is specified. It is very similar to what we see in the AWS Console:
+
+```
+Stack Events for stack: mynewstack
+-----------------------------------------------------------------------------------------------------------------------------
+TimeStamp                                ResourceStatus      Type                        LogicalID             Reason
+---------------------------------------  ------------------  --------------------------  --------------------  --------------
+Sun May 13 2018 03:51:17 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::NetworkAcl        PrivateNetworkAcl
+Sun May 13 2018 03:51:17 GMT+0100 (BST)  UPDATE_IN_PROGRESS  AWS::EC2::NetworkAcl        PrivateNetworkAcl
+Sun May 13 2018 03:51:16 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::Subnet            PublicSubnet1
+Sun May 13 2018 03:51:16 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::Subnet            PublicSubnet2
+Sun May 13 2018 03:51:16 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::Subnet            PrivateSubnet2
+Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PrivateRouteTable1
+Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::Subnet            PrivateSubnet1
+Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PublicRouteTable
+Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PrivateRouteTable2
+...
+```
+
 
 ## Unit Tests
 

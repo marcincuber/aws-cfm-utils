@@ -32,6 +32,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "aws-sdk": "^2.228.1",
+    "console.table": "^0.10.0",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
     "util": "^0.10.3",
