@@ -4,12 +4,12 @@ const assert = require('assert');
 const sinon = require('sinon');
 const { processopts } = require('../../lib/process_cli_options.js');
 
-before(() => {
-  sinon.stub(console, 'error').callsFake((warning) => { throw new Error(warning) })
-});
-after(() => console.error.restore());
-
 describe('processopts', () => {
+  before(() => {
+    sinon.stub(console, 'error').callsFake((warning) => { throw new Error(warning) })
+  });
+  after(() => console.error.restore());
+
   describe('proccess cli options', () => {
     describe('parameters', () => {
       it('handles as args', () => {
