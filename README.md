@@ -5,7 +5,7 @@
 [![dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils/status.svg)](https://david-dm.org/marcincuber/aws-cfm-utils)
 [![devDependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils/dev-status.svg)](https://david-dm.org/marcincuber/aws-cfm-utils?type=dev)
 [![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
-
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_shield)
 # AWS CLOUDFORMATION UTILS
 
 ### NPM module to create/update cloudformation stacks
@@ -181,9 +181,6 @@ npm run coverage
 5. path
 6. console.table
 
-## Disclaimer
-_The SOFTWARE PACKAGE provided in this page is provided "as is", without any guarantee made as to its suitability or fitness for any particular use. It may contain bugs, so use of this tool is at your own risk. We take no responsibility for any damage of any sort that may unintentionally be caused through its use._
-
 ## Contacts
 
-If you have any questions, drop an email to marcincuber@hotmail.com and leave stars! :)
+If you have any questions, drop me an email marcincuber@hotmail.com or open an issue and leave stars! :)

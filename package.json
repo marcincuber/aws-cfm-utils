@@ -29,7 +29,7 @@
     "report-coverage": "cat ./coverage/lcov.info"
   },
   "author": "Marcin Cuber <marcincuber@hotmail.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.228.1",
     "console.table": "^0.10.0",
