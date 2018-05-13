@@ -117,7 +117,7 @@ describe('convert', () => {
       }, Error);
     });
   });
-  describe('String value', () => {
+  describe('string', () => {
     it('handles valid string', () => {
       assert.deepEqual(opt_string('value'), 'value');
     });

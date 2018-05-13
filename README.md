@@ -3,7 +3,6 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/marcincuber/aws-cfm-utils/badge.svg?targetFile=package.json)](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
 [![npm version](https://badge.fury.io/js/aws-cfm-utils.svg)](https://badge.fury.io/js/aws-cfm-utils)
 [![NPM dependencies](https://david-dm.org/marcincuber/aws-cfm-utils.png)](https://david-dm.org/marcincuber/aws-cfm-utils)
-[![David](https://img.shields.io/david/dev/expressjs/express.svg)](https://www.npmjs.com/package/aws-cfm-utils)
 [![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
 
 # AWS CLOUDFORMATION UTILS
@@ -13,7 +12,7 @@
 ## Installation
 
 ```
-npm install -g
+npm install -g aws-cfm-utils
 ```
 
 ## Usage
@@ -73,7 +72,13 @@ Version: aws-cfm-utils --version
 // More complicated TagValue in the following two examples, ensure to escape double quotes
 7. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=TestTag,Value=TestTagValue Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"
 
-8. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\" --stack-events
+8. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"
+
+// Using AccessKeyID and SecretKey credentials
+9. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json  --accesskeyid A12389sasfas123A --secretkey /+-sadasd213123,123asdPOhrP9+4xW8z7v3h --stack-events
+
+// Using profile from your aws config
+10. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json  --profile yourprofilname --stack-events
 ```
 
 In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensure your values include all the special characters.
@@ -81,9 +86,13 @@ In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensur
 ### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)):
 
 ```
---profile //optional
---region //optional, defaults to Ireland region eu-west-1
+--accesskeyid 
+--secretkey 
+--profile 
+--region // defaults to Ireland region eu-west-1
 ```
+
+Note: you can either specify `profile` value or `accesskeyid` && `secretkey`. Otherwise error is returned. More about credential in `Credential settings` section.
 
 ### Used during creation of the stack, otherwise ignored ([create-stack](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html)):
 
@@ -128,6 +137,16 @@ Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTabl
 Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PrivateRouteTable2
 ...
 ```
+
+## Credential settings, General order of execution
+
+The AWS CLI looks for credentials and configuration settings in the following order:
+1. Command line options – region, output format and profile can be specified as command options to override default settings.
+2. Environment variables – AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN.
+3. The AWS credentials file – located at ~/.aws/credentials on Linux, macOS, or Unix, or at C:\Users\USERNAME \.aws\credentials on Windows. This file can contain multiple named profiles in addition to a default profile.
+4. The CLI configuration file – typically located at ~/.aws/config on Linux, macOS, or Unix, or at C:\Users\USERNAME \.aws\config on Windows. This file can contain a default profile, named profiles, and CLI specific configuration parameters for each.
+5. Container credentials – provided by Amazon Elastic Container Service on container instances when you assign a role to your task.
+6. Instance profile credentials – these credentials can be used on EC2 instances with an assigned instance role, and are delivered through the Amazon EC2 metadata service.
 
 ## Unit Tests
 

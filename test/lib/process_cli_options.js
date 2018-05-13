@@ -259,6 +259,38 @@ describe('processopts', () => {
         assert.deepEqual(argv.profile, 'webuser');
       });
     });
+    describe('accesskeyid', () => {
+      it('handles as args', () => {
+        const argv = processopts({
+          'accesskeyid': '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.accesskeyid, '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas');
+      });
+      it('handles escaped quotes as args', () => {
+        const argv = processopts({
+          'accesskeyid': '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.accesskeyid, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
+      });
+    });
+    describe('secretkey', () => {
+      it('handles as args', () => {
+        const argv = processopts({
+          'secretkey': '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.secretkey, '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas');
+      });
+      it('handles escaped quotes as args', () => {
+        const argv = processopts({
+          'secretkey': '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.secretkey, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
+      });
+    });
     describe('region', () => {
       it('handles as args', () => {
         const argv = processopts({

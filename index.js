@@ -11,14 +11,21 @@ const { deletestack } = require('./helpers/cfm_delete_stack.js'); //deletestack(
 const { createstack } = require('./helpers/cfm_create_stack.js'); //createstack(cfm, args)
 const { updatestack } = require('./helpers/cfm_update_stack.js'); //updatestack(cfm, args)
 
-const cfmclient = (region, profile) => {
+const cfmclient = (args) => {
   const options = {
     apiVersion: '2010-05-15',
-    region: region,
+    region: args.region
   };
-  if (profile !== undefined) {
-    options.credentials = new AWS.SharedIniFileCredentials({profile: profile});
+
+  if (args.profile !== undefined) {
+    options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
   }
+
+  if (args.accesskeyid !== undefined && args.secretkey !== undefined) {
+    options.accessKeyId = args.accesskeyid;
+    options.secretAccessKey = args.secretkey;
+  }
+
   return new AWS.CloudFormation(options);
 };
 
@@ -75,7 +82,7 @@ const input_args = process.argv;
 const args = processopts(cliopts(input_args));
 
 // Create AWS.CloudFormation client for specified region/profile
-const cfm = cfmclient(args.region, args.profile);
+const cfm = cfmclient(args);
 
 // Pre-exit scripts, clean-up script
 prexit(cfm, args.stackName);
