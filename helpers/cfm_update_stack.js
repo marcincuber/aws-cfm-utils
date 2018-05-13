@@ -9,8 +9,6 @@ const updatestack = async (cfm, args) => {
   const update_timeout = 3600000; //60 mins
   const process_start_timestamp = new Date().toISOString();
 
-  console.log('Updating stack: ' + args.stackName);
-
   let data;
   let stack_events;
   let count = 0;
@@ -54,7 +52,6 @@ const updatestack = async (cfm, args) => {
 
   try {
     data = await cfm.updateStack(params).promise();
-    console.log(data);
   } 
   catch (err) {
     if (err == 'ValidationError: No updates are to be performed.') { 

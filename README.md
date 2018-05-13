@@ -102,9 +102,9 @@ In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensur
 --stack-policy-during-update-url
 ```
 
-### Addional Custom options
+### Addional Custom options for update-stack and create-stack 
 
-In order to see all of the `CloudFormation Stack Events` happening during update/create pass in the following option;
+In order to see all the `CloudFormation Stack Events` happening during update/create process. Use the following option;
 
 ```
 --stack-events // if not specified only stack status is shown
@@ -128,7 +128,6 @@ Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTabl
 Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PrivateRouteTable2
 ...
 ```
-
 
 ## Unit Tests
 
