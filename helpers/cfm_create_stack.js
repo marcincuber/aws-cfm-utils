@@ -2,13 +2,13 @@
 
 const createstack = async (cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
+  const { returnstackevents } = require('./cfm_describe_stack_events.js');
   const sleep = require('util').promisify(setTimeout);
   
   const create_timeout = 3600000; //60 mins
+  const process_start_timestamp = new Date().toISOString();
 
-  console.log('Creating stack: ' + args.stackName);
-
-  let data;
+  let stack_events;
   let count = 0;
 
   const params = {
@@ -50,8 +50,7 @@ const createstack = async (cfm, args) => {
   }
 
   try {
-    data = await cfm.createStack(params).promise();
-    console.log(data);
+    await cfm.createStack(params).promise();
   } 
   catch (err) {
     console.error('Exiting with error: ' + err.stack);
@@ -70,6 +69,10 @@ const createstack = async (cfm, args) => {
       process.exit(1);
     } 
     else {
+      if (args.stackEvents === true) {
+        stack_events = await returnstackevents(cfm, args.stackName, process_start_timestamp);
+        console.table('Stack Events for stack: ' + args.stackName, stack_events);
+      }
       console.log('Waiting...');
       await sleep(15000); //15 secs
     }

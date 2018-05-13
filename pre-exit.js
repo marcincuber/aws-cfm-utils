@@ -1,61 +1,18 @@
 #!/usr/bin/env node
 
-const prexit = (cfm, stackname) => {
+const prexit = async (cfm, stackname) => {
   const { describestack } = require('./helpers/cfm_describe_stack.js');
+  const sleep = require('util').promisify(setTimeout);
+  const rollback_timeout = 600000;
 
-  // Pre-exit scripts
-  let preExit = [];
+  const beforeExitStackCheck = async (cfm, stackname) => {
+    let stack_status = await describestack(cfm, stackname);
+    let count = 0;
 
-  // Catch exit
-  process.stdin.resume();
-
-  process.on ('exit', (code) => {
-    let i;
-
-    console.log ('Process exit');
-
-    for (i = 0; i < preExit.length; i++) {
-      preExit[i] (code);
-    }
-
-    process.exit(code);
-  });
-
-  // Catch CTRL+C
-  process.on ('SIGINT', () => {
-    console.log ('\nCTRL+C...');
-    process.exit (0);
-  });
-
-  // Catch uncaught exception
-  process.on ('uncaughtException', (err) => {
-    console.dir (err, { depth: null });
-    process.exit (1);
-  });
-
-  // INSERT CODE
-  console.log ('App Running');
-
-  // Add pre-exit script
-  preExit.push ( async (code) => {
-    console.log ('Whoa! Exit code %d, cleaning up...', code);
-    const stack_status = await describestack(cfm, stackname);
     console.log('Stack in: ' + stack_status + ' state.');
-    
-    if (stack_status === 'UPDATE_IN_PROGRESS') {
-      try {
-        console.log('Canceling stack update.');
-        await cfm.cancelUpdateStack({ StackName: stackname }).promise();
-      } 
-      catch (err) {
-        console.error('Exiting with error: ' + err.stack);
-        process.exit(2);
-      }
-    }
     
     if (stack_status === 'UPDATE_ROLLBACK_FAILED') {
       try {
-        console.log('Trying to continue Update Rollback.');
         await cfm.continueUpdateRollback({ StackName: stackname }).promise();
       } 
       catch (err) {
@@ -63,6 +20,57 @@ const prexit = (cfm, stackname) => {
         process.exit(2);
       }
     }
+    if (stack_status === 'UPDATE_IN_PROGRESS') {
+      try {
+        await cfm.cancelUpdateStack({ StackName: stackname }).promise();
+      } 
+      catch (err) {
+        console.error('Exiting with error: ' + err.stack);
+        process.exit(2);
+      }
+    }
+
+    while (stack_status === 'UPDATE_IN_PROGRESS' || 
+    stack_status === 'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS' ||
+    stack_status === 'UPDATE_ROLLBACK_IN_PROGRESS' ||
+    stack_status === 'UPDATE_ROLLBACK_FAILED') {
+      
+      count = count++;
+      stack_status = await describestack(cfm, stackname);
+      if (count > rollback_timeout * 60 / 10) {
+        console.log('Aborting - Timeout while rolling back!');
+        process.exit(1);
+      } 
+      else {
+        console.log('Waiting...');
+        await sleep(10000); 
+      }
+    }
+
+    if (stack_status === 'UPDATE_ROLLBACK_COMPLETE') {
+      console.log('Rollback Completed. Exiting.');
+    }
+  };
+
+  // Catch exit
+  process.stdin.resume();
+
+  process.on('exit', () => {
+    console.log('Process exit');
+    process.exit(0);
+  });
+
+  // Catch CTRL+C
+  process.on('SIGINT', async () => {
+    console.log('\nCTRL+C...');
+    await beforeExitStackCheck(cfm, stackname);
+    process.exit(0);
+  });
+
+  // Catch uncaught exception
+  process.on('uncaughtException', (err) => {
+    console.dir(err, { depth: null });
+    process.exit(1);
   });
 };
 

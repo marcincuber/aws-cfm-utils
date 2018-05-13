@@ -2,17 +2,16 @@
 
 const updatestack = async (cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
-  const { describestackevents, returnstackevents } = require('./cfm_describe_stack_events.js');
+  const { returnstackevents } = require('./cfm_describe_stack_events.js');
   const sleep = require('util').promisify(setTimeout);
+  // eslint-disable-next-line no-alert, quotes, semi, no-unused-vars
   const cTable = require('console.table');
   
   const update_timeout = 3600000; //60 mins
   const process_start_timestamp = new Date().toISOString();
 
-  let data;
   let stack_events;
   let count = 0;
-
   
   const params = {
     StackName: args.stackName,
@@ -51,7 +50,7 @@ const updatestack = async (cfm, args) => {
   }
 
   try {
-    data = await cfm.updateStack(params).promise();
+    await cfm.updateStack(params).promise();
   } 
   catch (err) {
     if (err == 'ValidationError: No updates are to be performed.') { 
@@ -81,7 +80,7 @@ const updatestack = async (cfm, args) => {
     } 
     else {
       if (args.stackEvents === true) {
-        let stack_events = await returnstackevents(cfm, args.stackName, process_start_timestamp);
+        stack_events = await returnstackevents(cfm, args.stackName, process_start_timestamp);
         console.table('Stack Events for stack: ' + args.stackName, stack_events);
       }
 
