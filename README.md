@@ -6,6 +6,8 @@
 [![devDependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils/dev-status.svg)](https://david-dm.org/marcincuber/aws-cfm-utils?type=dev)
 [![npm weekly](https://img.shields.io/npm/dw/aws-cfm-utils.svg)](https://www.npmjs.com/~marcincuber)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_shield)
+
+
 # AWS CLOUDFORMATION UTILS
 
 ### NPM module to create/update cloudformation stacks

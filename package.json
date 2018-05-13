@@ -21,9 +21,10 @@
     "aws-cfm-utils": "./index.js"
   },
   "scripts": {
-    "build": "npm install",
-    "eslint": "eslint .",
-    "eslint-fix": "eslint --fix .",
+    "build": "rm -rf ./node_modules && rm -f ./package-lock.json && npm install",
+    "build:test": "npm run build && npm run lint && npm run test",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "test": "make mocha",
     "coverage": "make -B coverage",
     "report-coverage": "cat ./coverage/lcov.info"
@@ -31,7 +32,7 @@
   "author": "Marcin Cuber <marcincuber@hotmail.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.228.1",
+    "aws-sdk": "^2.238.1",
     "console.table": "^0.10.0",
     "path": "^0.12.7",
     "util": "^0.10.3",
@@ -47,7 +48,6 @@
     "eslint-plugin-standard": "^3.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1",
-    "rimraf": "^2.6.2",
     "sinon": "^5.0.7"
   }
 }
