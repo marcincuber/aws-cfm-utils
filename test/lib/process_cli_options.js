@@ -4,15 +4,15 @@ const assert = require('assert');
 const sinon = require('sinon');
 const { processopts } = require('../../lib/process_cli_options.js');
 
-describe('processopts', () => {
-  before(() => {
-    sinon.stub(console, 'error').callsFake((warning) => { throw new Error(warning) })
+describe('processopts', function() {
+  before(function() {
+    sinon.stub(console, 'error').callsFake(function(warning) { throw new Error(warning) })
   });
-  after(() => console.error.restore());
+  after(function() { console.error.restore() });
 
-  describe('proccess cli options', () => {
-    describe('parameters', () => {
-      it('handles as args', () => {
+  describe('proccess cli options', function() {
+    describe('parameters', function() {
+      it('handles as args', function() {
         const argv = processopts({
           parameters: [
             'ParameterKey=key,UsePreviousValue=true',
@@ -25,7 +25,7 @@ describe('processopts', () => {
           { ParameterKey: 'key', ParameterValue: 'value' }
         ]);
       });
-      it('handles as JSON file', () => {
+      it('handles as JSON file', function() {
         const argv = processopts({
           parameters: [
             '../../../test/fixtures/parameters.json'
@@ -37,7 +37,7 @@ describe('processopts', () => {
           { ParameterKey: 'TestName2', ParameterValue: 'TestNameValue2' }
         ]);
       });
-      it('handles as JSON string', () => {
+      it('handles as JSON string', function() {
         const argv = processopts({
           parameters: [
             '[{"ParameterKey": "KeyVal1","ParameterValue":"sVal1"}, {"ParameterKey": "KeyVal2","ParameterValue":"sVal2"}]'
@@ -50,8 +50,8 @@ describe('processopts', () => {
         ]);
       });
     });
-    describe('tags', () => {
-      it('handles as args', () => {
+    describe('tags', function() {
+      it('handles as args', function() {
         const argv = processopts({
           tags: [
             'Key=TestTag1,Value=TestTagValue1',
@@ -64,7 +64,7 @@ describe('processopts', () => {
           { Key: 'TestTag2', Value: 'TestTagValue2' }
         ]);
       });
-      it('handles as JSON file', () => {
+      it('handles as JSON file', function() {
         const argv = processopts({
           tags: [
             '../../../test/fixtures/tags.json'
@@ -76,7 +76,7 @@ describe('processopts', () => {
           { Key: 'TestTag2', Value: 'TestTagValue2' }
         ]);
       });
-      it('handles as JSON string', () => {
+      it('handles as JSON string', function() {
         const argv = processopts({
           tags: [
             '[{"Key": "TestTag1","Value":"TestTagValue1"}, {"Key": "TestTag2","Value":"TestTagValue2"}]'
@@ -88,15 +88,15 @@ describe('processopts', () => {
           { Key: 'TestTag2', Value: 'TestTagValue2' }
         ]);
       });
-      it('handles as empty array', () => {
-        assert.throws(() => {
+      it('handles as empty array', function() {
+        assert.throws(function() {
           processopts({
             tags: []
           });
         }, Error);
       });
-      it('handles missing value inside array', () => {
-        assert.throws(() => {
+      it('handles missing value inside array', function() {
+        assert.throws(function() {
           processopts({
             tags: [
             '[{"Key": "TestTag1","Value":"TestTagValue1"}, {"Key"}]'
@@ -105,8 +105,8 @@ describe('processopts', () => {
         }, Error);
       });
     });
-    describe('capabilities', () => {
-      it('handles as args', () => {
+    describe('capabilities', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'capabilities': [ true ],
           'stack-name': 'name'
@@ -114,15 +114,15 @@ describe('processopts', () => {
         assert.deepEqual(argv.capabilities, [ true ] );
       });
     });
-    describe('enableTerminationProtection', () => {
-      it('handles as args', () => {
+    describe('enableTerminationProtection', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'enable-termination-protection': true,
           'stack-name': 'name'
         });
         assert.deepEqual(argv.enableTerminationProtection, true);
       });
-      it('handles as empty args', () => {
+      it('handles as empty args', function() {
         const argv = processopts({
           'enable-termination-protection': '',
           'stack-name': 'name'
@@ -130,8 +130,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.enableTerminationProtection, false);
       });
     });
-    describe('disableRollback', () => {
-      it('handles as args', () => {
+    describe('disableRollback', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'disable-rollback': true,
           'stack-name': 'name'
@@ -139,23 +139,23 @@ describe('processopts', () => {
         assert.deepEqual(argv.disableRollback, true);
       });
     });
-    describe('stackName', () => {
-      it('handles as args', () => {
+    describe('stackName', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'stack-name': 'name'
         });
         assert.deepEqual(argv.stackName, 'name');
       });
-      it('error with empty stack-name', () => {
-        assert.throws(() => {
+      it('error with empty stack-name', function() {
+        assert.throws(function() {
           processopts({
             'stack-name': ''
           });
         }, Error);
       });
     });
-    describe('stackPolicyUrl', () => {
-      it('handles as args', () => {
+    describe('stackPolicyUrl', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'stack-policy-url': 'https://bucket.s3-eu-west-1.amazonaws.com',
           'stack-name': 'name'
@@ -163,8 +163,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.stackPolicyUrl, 'https://bucket.s3-eu-west-1.amazonaws.com');
       });
     });
-    describe('templateUrl', () => {
-      it('handles as args', () => {
+    describe('templateUrl', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'template-url': 'https://bucket.s3-eu-west-1.amazonaws.com',
           'stack-name': 'name'
@@ -172,24 +172,24 @@ describe('processopts', () => {
         assert.deepEqual(argv.templateUrl, 'https://bucket.s3-eu-west-1.amazonaws.com');
       });
     });
-    describe('notificationArns', () => {
-      it('handles as args', () => {
+    describe('notificationArns', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'notification-arns': [ 'arn:aws:sns:eu-west-1:123456789012:example-topic' ],
           'stack-name': 'name'
         });
         assert.deepEqual(argv.notificationArns, [ 'arn:aws:sns:eu-west-1:123456789012:example-topic' ]);
       });
-      it('handles as empty array', () => {
-        assert.throws(() => {
+      it('handles as empty array', function() {
+        assert.throws(function() {
           processopts({
             'notification-arns': []
           });
         }, Error);
       });
     });
-    describe('roleArn', () => {
-      it('handles as args', () => {
+    describe('roleArn', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'role-arn': 'arn:aws:sns:eu-west-1:123456789012:example-topic',
           'stack-name': 'name'
@@ -197,8 +197,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.roleArn, 'arn:aws:sns:eu-west-1:123456789012:example-topic');
       });
     });
-    describe('resourceTypes', () => {
-      it('handles as args', () => {
+    describe('resourceTypes', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'resource-types': [ 'AWS::EC2::Instance', 'AWS::EC2::Resource' ],
           'stack-name': 'name'
@@ -206,16 +206,16 @@ describe('processopts', () => {
         assert.deepEqual(argv.resourceTypes, [ 'AWS::EC2::Instance', 'AWS::EC2::Resource' ]);
       });
     });
-    describe('timeoutInMinutes', () => {
-      it('handles as positive int', () => {
+    describe('timeoutInMinutes', function() {
+      it('handles as positive int', function() {
         const argv = processopts({
           'timeout-in-minutes': 1,
           'stack-name': 'name'
         });
         assert.deepEqual(argv.timeoutInMinutes, 1);
       });
-      it('handles as negative int', () => {
-        assert.throws(() => {
+      it('handles as negative int', function() {
+        assert.throws(function() {
           processopts({
             'timeout-in-minutes': -1,
             'stack-name': 'name'
@@ -223,8 +223,8 @@ describe('processopts', () => {
         }, Error);
       });
     });
-    describe('onFailure', () => {
-      it('handles as args', () => {
+    describe('onFailure', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'on-failure': 'DO_NOTHING',
           'stack-name': 'name'
@@ -232,8 +232,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.onFailure, 'DO_NOTHING');
       });
     });
-    describe('UsePreviousTemplate', () => {
-      it('handles as args', () => {
+    describe('UsePreviousTemplate', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'use-previous-template': true,
           'stack-name': 'name'
@@ -241,8 +241,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.UsePreviousTemplate, true);
       });
     });
-    describe('stackPolicyDuringUpdateUrl', () => {
-      it('handles as args', () => {
+    describe('stackPolicyDuringUpdateUrl', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'stack-policy-during-update-url': 'https://bucket.s3-eu-west-1.amazonaws.com',
           'stack-name': 'name'
@@ -250,8 +250,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.stackPolicyDuringUpdateUrl, 'https://bucket.s3-eu-west-1.amazonaws.com');
       });
     });
-    describe('profile', () => {
-      it('handles as args', () => {
+    describe('profile', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'profile': 'webuser',
           'stack-name': 'name'
@@ -259,15 +259,15 @@ describe('processopts', () => {
         assert.deepEqual(argv.profile, 'webuser');
       });
     });
-    describe('accesskeyid', () => {
-      it('handles as args', () => {
+    describe('accesskeyid', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'accesskeyid': '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas',
           'stack-name': 'name'
         });
         assert.deepEqual(argv.accesskeyid, '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas');
       });
-      it('handles escaped quotes as args', () => {
+      it('handles escaped quotes as args', function() {
         const argv = processopts({
           'accesskeyid': '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"',
           'stack-name': 'name'
@@ -275,15 +275,15 @@ describe('processopts', () => {
         assert.deepEqual(argv.accesskeyid, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
       });
     });
-    describe('secretkey', () => {
-      it('handles as args', () => {
+    describe('secretkey', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'secretkey': '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas',
           'stack-name': 'name'
         });
         assert.deepEqual(argv.secretkey, '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas');
       });
-      it('handles escaped quotes as args', () => {
+      it('handles escaped quotes as args', function() {
         const argv = processopts({
           'secretkey': '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"',
           'stack-name': 'name'
@@ -291,8 +291,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.secretkey, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
       });
     });
-    describe('region', () => {
-      it('handles as args', () => {
+    describe('region', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'region': 'eu-west-1',
           'stack-name': 'name'
@@ -300,15 +300,15 @@ describe('processopts', () => {
         assert.deepEqual(argv.region, 'eu-west-1');
       });
     });
-    describe('wait', () => {
-      it('handles as args', () => {
+    describe('wait', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'wait': true,
           'stack-name': 'name'
         });
         assert.deepEqual(argv.wait, true);
       });
-      it('handles as empty', () => {
+      it('handles as empty', function() {
         const argv = processopts({
           'wait': '',
           'stack-name': 'name'
@@ -316,8 +316,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.wait, false);
       });
     });
-    describe('template-body', () => {
-      it('handles as JSON file', () => {
+    describe('template-body', function() {
+      it('handles as JSON file', function() {
         const argv = processopts({
           'template-body': [
             '../../../test/fixtures/short-template-body.json'
@@ -327,15 +327,15 @@ describe('processopts', () => {
         );
       });
     });
-    describe('stack-events', () => {
-      it('handles as args', () => {
+    describe('stack-events', function() {
+      it('handles as args', function() {
         const argv = processopts({
           'stack-events': true,
           'stack-name': 'name'
         });
         assert.deepEqual(argv.stackEvents, true);
       });
-      it('handles as empty', () => {
+      it('handles as empty', function() {
         const argv = processopts({
           'stack-events': '',
           'stack-name': 'name'
@@ -343,8 +343,8 @@ describe('processopts', () => {
         assert.deepEqual(argv.stackEvents, false);
       });
     });
-    describe('stack-policy-during-update-body', () => {
-      it('handles as JSON file', () => {
+    describe('stack-policy-during-update-body', function() {
+      it('handles as JSON file', function() {
         const argv = processopts({
           'stack-policy-during-update-body': [
             '../../../test/fixtures/stackpolicy.json'
@@ -354,8 +354,8 @@ describe('processopts', () => {
         );
       });
     });
-    describe('stack-policy-body', () => {
-      it('handles as JSON file', () => {
+    describe('stack-policy-body', function() {
+      it('handles as JSON file', function() {
         const argv = processopts({
           'stack-policy-body': [
             '../../../test/fixtures/stackpolicy.json'
