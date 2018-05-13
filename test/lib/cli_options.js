@@ -1,27 +1,27 @@
 'use strict';
 
 const assert = require('assert');
+const sinon = require('sinon');
 const { cliopts } = require('../../lib/cli_options.js');
-
 
 describe('arg', () => {
   describe('parse', () => {
     it('required minimum', () => {
       const argv = cliopts(['/node', 'index.js', '--stack-name', 'name']);
-      assert.equal(argv.stackName, 'name');
+      assert.equal(argv['stackName'], 'name');
     });
     it('global', () => {
-      const argv = cliopts(['/node', 'index.js', '--region', 'eu-west-1', '--profile', 'profile', '--stack-name', 'name']);
-      assert.equal(argv.region, 'eu-west-1');
-      assert.equal(argv.profile, 'profile');
+      const argv = cliopts(['/node', 'index.js', '--region', 'eu-west-2', '--profile', 'profile', '--stack-name', 'name']);
+      assert.equal(argv['region'], 'eu-west-2');
+      assert.equal(argv['profile'], 'profile');
       assert.equal(argv['stack-name'], 'name');
     });
     it('common', () => {
       const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', '--stack-events', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
       assert.equal(argv['stack-name'], 'name');
       assert.equal(argv['template-url'], 'url');
-      assert.deepEqual(argv.parameters, ['ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value']);
-      assert.deepEqual(argv.capabilities, ['CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM']);
+      assert.deepEqual(argv['parameters'], ['ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value']);
+      assert.deepEqual(argv['capabilities'], ['CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM']);
       assert.deepEqual(argv['resource-types'], ['type1', 'type2']);
       assert.equal(argv['role-arn'], 'arn');
       assert.equal(argv['stack-policy-url'], 'url');
@@ -79,20 +79,35 @@ describe('arg', () => {
       });
     });
     describe('additional', () => {
-      it('update', () => {
+      it('takes --stack-events', () => {
+        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--stack-events']);
+        assert.equal(argv['stack-name'], 'name');
+        assert.equal(argv['stack-events'], true);
+      });
+      it('does not take --stack-events', () => {
         const argv = cliopts(['/node', 'index.js', '--stack-name', 'name']);
         assert.equal(argv['stack-name'], 'name');
-        assert.equal(argv.wait, undefined);
+        assert.equal(argv['stack-events'], undefined);
       });
-      it('--use-previous-template', () => {
-        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--wait']);
-        assert.equal(argv['stack-name'], 'name');
-        assert.equal(argv.wait, true);
+    });
+    describe('credentials', () => {
+      it('takes profile and no region', () => {
+        const argv = cliopts(['/node', 'index.js', '--profile', 'yourprofilname', '--stack-name', 'name']);
+          assert.equal(argv['region'], 'eu-west-1');
+          assert.equal(argv['profile'], 'yourprofilname');
+          assert.equal(argv['stack-name'], 'name');
       });
-      it('--no-use-previous-template', () => {
-        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--no-wait']);
-        assert.equal(argv['stack-name'], 'name');
-        assert.equal(argv.wait, false);
+      it('errors when profile and AWS access keys', () => {
+        assert.throws(() => { 
+          cliopts(['/node', 'index.js', '--stack-name', 'name', '--profile', 'yourprofilname', '--accesskeyid', 'AWS_KEY_ID', '--secretkey', 'AWS_SECRET_KEY']);
+        }, Error);
+      });
+      it('takes AWS keys credentials', () => {
+        const argv = cliopts(['/node', 'index.js', '--accesskeyid', 'AWS_KEY_ID', '--secretkey', 'AWS_SECRET_KEY', '--stack-name', 'name']);
+          assert.equal(argv['region'], 'eu-west-1');
+          assert.equal(argv['stack-name'], 'name');
+          assert.equal(argv['accesskeyid'], 'AWS_KEY_ID');
+          assert.equal(argv['secretkey'], 'AWS_SECRET_KEY');
       });
     });
   });
