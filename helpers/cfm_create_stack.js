@@ -2,13 +2,15 @@
 
 const createstack = async (cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
+  const { returnstackevents } = require('./cfm_describe_stack_events.js');
   const sleep = require('util').promisify(setTimeout);
+  // eslint-disable-next-line no-alert, quotes, semi, no-unused-vars
+  const cTable = require('console.table');
   
   const create_timeout = 3600000; //60 mins
+  const process_start_timestamp = new Date().toISOString();
 
-  console.log('Creating stack: ' + args.stackName);
-
-  let data;
+  let stack_events;
   let count = 0;
 
   const params = {
@@ -28,7 +30,6 @@ const createstack = async (cfm, args) => {
   };
 
   if (args.parameters !== undefined) {
-    console.log(args.parameters);
     params.Parameters = args.parameters.map((parameter) => {
       const ret = {
         ParameterKey: parameter.ParameterKey
@@ -42,16 +43,16 @@ const createstack = async (cfm, args) => {
       return ret;
     });
   }
+  
   if (args.tags !== undefined) {
     params.Tags = args.tags.map((tag) => ({
-      Key: tag.key,
-      Value: tag.value
+      Key: tag.Key,
+      Value: tag.Value
     }));
   }
 
   try {
-    data = await cfm.createStack(params).promise();
-    console.log(data);
+    await cfm.createStack(params).promise();
   } 
   catch (err) {
     console.error('Exiting with error: ' + err.stack);
@@ -70,6 +71,10 @@ const createstack = async (cfm, args) => {
       process.exit(1);
     } 
     else {
+      if (args.stackEvents === true) {
+        stack_events = await returnstackevents(cfm, args.stackName, process_start_timestamp);
+        console.table('\n' + 'Stack Events for stack: ' + args.stackName, stack_events);
+      }
       console.log('Waiting...');
       await sleep(15000); //15 secs
     }

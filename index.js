@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 
+const { prexit } = require('./pre-exit.js');
 const { cliopts } = require('./lib/cli_options.js');
 const { processopts } = require('./lib/process_cli_options.js');
 
@@ -10,24 +11,31 @@ const { deletestack } = require('./helpers/cfm_delete_stack.js'); //deletestack(
 const { createstack } = require('./helpers/cfm_create_stack.js'); //createstack(cfm, args)
 const { updatestack } = require('./helpers/cfm_update_stack.js'); //updatestack(cfm, args)
 
-const cfmclient = (region, profile) => {
+const cfmclient = (args) => {
   const options = {
     apiVersion: '2010-05-15',
-    region: region,
+    region: args.region
   };
-  if (profile !== undefined) {
-    options.credentials = new AWS.SharedIniFileCredentials({profile: profile});
+
+  if (args.profile !== undefined) {
+    options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
   }
+
+  if (args.accesskeyid !== undefined && args.secretkey !== undefined) {
+    options.accessKeyId = args.accesskeyid;
+    options.secretAccessKey = args.secretkey;
+  }
+
   return new AWS.CloudFormation(options);
 };
 
 const main = async (cfm, args) => {
   const stack_status = await describestack(cfm, args.stackName);
-  console.log('status: ' + stack_status);
 
   if (stack_status != 400) {
     try {
-      console.log('Stack: ' + args.stackName + ' exists! Status: ' + stack_status);
+      console.log('\n' + 'Stack named: ' + args.stackName + ' already exists! Status: ' + stack_status);
+
       switch (stack_status) {
       case 'CREATE_COMPLETE':
         await updatestack(cfm, args);
@@ -45,7 +53,7 @@ const main = async (cfm, args) => {
         await updatestack(cfm, args);
         break;
       case 'CREATE_FAILED':
-        await deletestack(cfm, args.stackName);
+        await deletestack(cfm, args);
         await createstack(cfm, args);
         break;
       default:
@@ -74,7 +82,10 @@ const input_args = process.argv;
 const args = processopts(cliopts(input_args));
 
 // Create AWS.CloudFormation client for specified region/profile
-const cfm = cfmclient(args.region, args.profile);
+const cfm = cfmclient(args);
+
+// Pre-exit scripts, clean-up script
+prexit(cfm, args.stackName);
 
 // Create/Update cloudformation stack using input args and cfm client
 main(cfm, args);

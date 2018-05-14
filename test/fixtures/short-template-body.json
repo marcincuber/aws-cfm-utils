@@ -1,0 +1,24 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "KeyName": {
+      "Default": "TNLDefault"
+    },
+    "TestName": {
+      "Description": "TestName",
+      "Type": "String"
+    },
+    "TestName2":{
+      "Description": "TestName2",
+      "Type": "String"
+    }
+  },
+  "Mappings": {
+    "AWSNATAMI": {
+      "eu-west-1": { "AMI": "ami-785db401" }
+    },
+    "AWSRegionArch2AMI": {
+      "eu-west-1": { "64": "ami-785db401" }
+    }
+  }
+}
