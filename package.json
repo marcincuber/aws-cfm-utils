@@ -1,6 +1,6 @@
 {
   "name": "aws-cfm-utils",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "AWS utils to deploy cloudformation stack/templates",
   "main": "index.js",
   "keywords": [
@@ -34,7 +34,6 @@
   "dependencies": {
     "aws-sdk": "^2.238.1",
     "console.table": "^0.10.0",
-    "path": "^0.12.7",
     "util": "^0.10.3",
     "yargs": "^11.0.0"
   },

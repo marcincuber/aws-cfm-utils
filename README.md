@@ -17,6 +17,7 @@
 * [Usage](#usage)
 * [CLI Options](#cli-options)
     * [CLI Examples](#cli-examples)
+    * [Read File Support](#read-from-file)
 * [Parameter Options](#parameter-options)
     * [Global Parameters](#global-parameters)
     * [Create Stack Parameters](#create-stack-parameters)
@@ -87,30 +88,38 @@ Version: aws-cfm-utils --version
 ```
 1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
 
-2. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
+2. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters file://test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
     
-3. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json
+3. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters file://test/fixtures/parameters.json --tags file://test/fixtures/tags.json
     
-4. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
+4. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
 
 // More complicated ParameterValues in the following two examples, ensure to escape double quotes
-5. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2
+5. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2
 
-6. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2
+6. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2
 
 // More complicated TagValue in the following two examples, ensure to escape double quotes
-7. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=TestTag,Value=TestTagValue Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"
+7. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection --parameters ParameterKey=TestName,ParameterValue=\"subnet1,subnet2,subnet3\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=TestTag,Value=TestTagValue Key=s3buckets,Value=\"s3://bucket_name1/....,s3://bucket_name2/....\"
 
-8. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"
+8. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters ParameterKey=vpc,ParameterValue=\"vpcid=12345,vpceid=12345\" ParameterKey=TestName2,ParameterValue=TestKey2 --tags Key=s3bucket,Value=\"S3link=s3://bucket_name/....,S3name=bucket_name\"
 
 // Using AccessKeyID and SecretKey credentials
-9. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json  --accesskeyid A12389sasfas123A --secretkey /+-sadasd213123,123asdPOhrP9+4xW8z7v3h --stack-events
+9. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters file://test/fixtures/parameters.json --tags file://test/fixtures/tags.json  --accesskeyid A12389sasfas123A --secretkey /+-sadasd213123,123asdPOhrP9+4xW8z7v3h --stack-events
 
 // Using profile from your aws config
-10. aws-cfm-utils --stack-name mynewstack --template-body test/fixtures/template.json --stack-policy-body test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters test/fixtures/parameters.json --tags test/fixtures/tags.json  --profile yourprofilname --stack-events
+10. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --no-enable-termination-protection --parameters file://test/fixtures/parameters.json --tags file://test/fixtures/tags.json  --profile yourprofilname --stack-events
 ```
 
 In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensure your values include all the special characters.
+
+### Read from file support <a name="read-from-file"></a>
+
+The following CLI options supprt `read file from disk`:
+
+``--tempate-body --stack-policy-body --parameters --tags``
+
+Simply use the ``file://{DIR_FILENME}``. See section above for examples.
 
 ## Parameter Options <a name="parameter-options"></a>
 
@@ -232,11 +241,9 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 ### Dependencies <a name="prod-dependencies"></a>
 
 1. aws-sdk
-2. fs
-3. util
-4. yargs
-5. path
-6. console.table
+2. util
+3. yargs
+4. console.table
 
 [See Dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils)
 

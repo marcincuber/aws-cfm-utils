@@ -28,7 +28,7 @@ describe('processopts', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
           parameters: [
-            '../../../test/fixtures/parameters.json'
+            'file://test/fixtures/parameters.json'
           ],
           'stack-name': 'name'
         });
@@ -67,7 +67,7 @@ describe('processopts', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
           tags: [
-            '../../../test/fixtures/tags.json'
+            'file://test/fixtures/tags.json'
           ],
           'stack-name': 'name'
         });
@@ -303,9 +303,7 @@ describe('processopts', function() {
     describe('template-body', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
-          'template-body': [
-            '../../../test/fixtures/short-template-body.json'
-          ]
+          'template-body': 'file://test/fixtures/short-template-body.json'
         });
         assert.deepEqual(argv.templateBody, '{\n  \"AWSTemplateFormatVersion\": \"2010-09-09\",\n  \"Parameters\": {\n    \"KeyName\": {\n      \"Default\": \"TNLDefault\"\n    },\n    \"TestName\": {\n      \"Description\": \"TestName\",\n      \"Type\": \"String\"\n    },\n    \"TestName2\":{\n      \"Description\": \"TestName2\",\n      \"Type\": \"String\"\n    }\n  },\n  \"Mappings\": {\n    \"AWSNATAMI\": {\n      \"eu-west-1\": { \"AMI\": \"ami-785db401\" }\n    },\n    \"AWSRegionArch2AMI\": {\n      \"eu-west-1\": { \"64\": \"ami-785db401\" }\n    }\n  }\n}\n'
         );
@@ -330,9 +328,7 @@ describe('processopts', function() {
     describe('stack-policy-during-update-body', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
-          'stack-policy-during-update-body': [
-            '../../../test/fixtures/stackpolicy.json'
-          ]
+          'stack-policy-during-update-body': 'file://test/fixtures/stackpolicy.json'
         });
         assert.deepEqual(argv.stackPolicyDuringUpdateBody, '{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n'
         );
@@ -341,9 +337,14 @@ describe('processopts', function() {
     describe('stack-policy-body', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
-          'stack-policy-body': [
-            '../../../test/fixtures/stackpolicy.json'
-          ]
+          'stack-policy-body': 'file://test/fixtures/stackpolicy.json'
+        });
+        assert.deepEqual(argv.stackPolicyBody, '{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n'
+        );
+      });
+      it('handles as JSON string', function() {
+        const argv = processopts({
+          'stack-policy-body': '{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n'
         });
         assert.deepEqual(argv.stackPolicyBody, '{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n'
         );
