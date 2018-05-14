@@ -8,7 +8,7 @@ echo $(printf "TRAVIS_PULL_REQUEST %s" ${TRAVIS_PULL_REQUEST})
 
 # if [[ ${TRAVIS_BRANCH} != 'master' ]]
 # then
-#   echo "Not on master"
+#   echo "Not on master branch!"
 #   exit 0
 # fi
 
@@ -24,43 +24,47 @@ git config user.email "marcincuber@hotmail.com"
 
 git remote set-url origin https://${GH_TOKEN}@github.com/marcincuber/aws-cfm-utils.git > /dev/null 2>&1
 
-TAGS=$(git tag -l --points-at HEAD)
-echo $(printf "Existing tags %s" ${TAGS})
+# update remote branches
+git remote update -p
 
-# we don't want to recursively publish
-# if [[ ${TAGS} ]]
+PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+echo $(printf "Package version on master branch %s" ${PACKAGE_VERSION})
+
+TAG_VERSION="v${PACKAGE_VERSION}"
+
+TIP_COMMIT=$(git rev-parse origin/master)
+echo $(printf "Travis commit: %s, Head commit: %s" ${TRAVIS_COMMIT} ${TIP_COMMIT})
+
+# make sure we only publish if we are at the head of master
+# if [[ ${TIP_COMMIT} != ${TRAVIS_COMMIT} ]]
 # then
-#   echo "This is the published c
-#   ommit"
+#   echo "Not on the tip of master!"
 #   exit 0
 # fi
 
-git checkout master
+# Publish tag fails if the tag already exists
+git tag ${TAG_VERSION}
+git push origin master ${TAG_VERSION} --quiet > /dev/null 2>&1
 
-VERSION_MASTER_BRANCH=$(node -p -e "require('./package.json').version")
-echo $(printf "Package version on master branch %s" ${VERSION_MASTER})
+# Set npm credentials
+echo "Setting up npm"
+echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
-TIP_COMMIT=$(git rev-parse HEAD)
-echo $(printf "Travis commit: %s, Head commit: %s" ${TRAVIS_COMMIT} ${TIP_COMMIT})
+NPM_VERSIONS=$(npm view aws-cfm-utils versions --json)
+NPM_VERSION_STATUS=$(echo ${NPM_VERSIONS} | jq 'contains([ "'$PACKAGE_VERSION'" ])')
 
-make sure we only publish if we are at the head of master
-if [[ ${TIP_COMMIT} != ${TRAVIS_COMMIT} ]]
+# Publish new version of NPM module
+if [ "${NPM_VERSION_STATUS}" = true ] ; 
 then
-  echo "Not on the tip of master!"
+  echo "This version of NPM module is already published! Exiting."
   exit 0
+else
+  echo $(printf "We are publishing NPM with new version: %s" ${PACKAGE_VERSION})
+  npm publish
 fi
 
-# # set npm credentials
-# echo "Setting up npm"
-# echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+rm ~/.npmrc
 
-# # bump versions, create change logs, create tags, publish to npm
-# PR_MSG=$(git log --pretty=format:"%h" -1)
-# MESSAGE=$(printf "chore: Publish %s" $PR_MSG)
-# echo $MESSAGE
-# lerna publish --conventional-commits --yes --concurrency=1 --exact -m "$MESSAGE"
 
-# # push above changes to git
-# echo "Pushing to master"
-# git push origin master --tags --quiet > /dev/null 2>&1
+
 

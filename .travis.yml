@@ -1,9 +1,11 @@
+before_install:
+  sudo apt-get install jq
 language:
   node_js
 node_js:
-  - "8"
-  - "9"
-  - "10"
+  - '8'
+  - '9'
+  - '10'
 install:
   - npm install
   - npm install -g codecov
@@ -14,5 +16,12 @@ script:
   - npm run coverage
   - npm run report-coverage
   - codecov
-after_success:
-  - ./scripts/publish.sh
+after_success: >
+  node_version=$(node -v);
+  if [ ${node_version:1:1} = 8 ]; then
+    echo "Running publish script for node 8";
+    ./scripts/publish.sh;
+  else
+    echo "Finish";
+    exit 0;
+  fi
