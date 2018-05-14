@@ -6,17 +6,17 @@ echo "Running publish script"
 echo $(printf "TRAVIS_BRANCH %s" ${TRAVIS_BRANCH})
 echo $(printf "TRAVIS_PULL_REQUEST %s" ${TRAVIS_PULL_REQUEST})
 
-# if [[ ${TRAVIS_BRANCH} != 'master' ]]
-# then
-#   echo "Not on master branch!"
-#   exit 0
-# fi
+if [[ ${TRAVIS_BRANCH} != 'master' ]]
+then
+  echo "Not on master branch!"
+  exit 0
+fi
 
-# if [[ ${TRAVIS_PULL_REQUEST} != 'false' ]]
-# then
-#   echo "We don't publish for PRs"
-#   exit 0
-# fi
+if [[ ${TRAVIS_PULL_REQUEST} != 'false' ]]
+then
+  echo "We don't publish for PRs"
+  exit 0
+fi
 
 # set up git
 git config user.name "Publish Travis"
@@ -35,16 +35,19 @@ TAG_VERSION="v${PACKAGE_VERSION}"
 TIP_COMMIT=$(git rev-parse origin/master)
 echo $(printf "Travis commit: %s, Head commit: %s" ${TRAVIS_COMMIT} ${TIP_COMMIT})
 
-# make sure we only publish if we are at the head of master
-# if [[ ${TIP_COMMIT} != ${TRAVIS_COMMIT} ]]
-# then
-#   echo "Not on the tip of master!"
-#   exit 0
-# fi
+make sure we only publish if we are at the head of master
+if [[ ${TIP_COMMIT} != ${TRAVIS_COMMIT} ]]
+then
+  echo "Not on the tip of master!"
+  exit 0
+fi
 
 # Publish tag fails if the tag already exists
 git tag ${TAG_VERSION}
 git push origin master ${TAG_VERSION} --quiet > /dev/null 2>&1
+# NOTE: id the tag already exists, the above will fail quietly and process will exit with code 0;
+
+echo "New Github Tag has been published!"
 
 # Set npm credentials
 echo "Setting up npm"
