@@ -325,6 +325,23 @@ describe('processopts', function() {
         assert.deepEqual(argv.stackEvents, false);
       });
     });
+    describe('refreshRate', function() {
+      it('handles as positive int', function() {
+        const argv = processopts({
+          'refresh-rate': 50,
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.refreshRate, 50);
+      });
+      it('handles as negative int', function() {
+        assert.throws(function() {
+          processopts({
+            'refresh-rate': -1,
+            'stack-name': 'name'
+          });
+        }, Error);
+      });
+    });
     describe('stack-policy-during-update-body', function() {
       it('handles as JSON file', function() {
         const argv = processopts({
