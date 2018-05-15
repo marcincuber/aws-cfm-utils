@@ -9,6 +9,7 @@ const deletestack = async (cfm, args) => {
   const cTable = require('console.table');
   
   const deletion_timeout = 1800000; //30 mins
+  const refresh_rate = args.refreshRate * 1000; //convert to ms
   const process_start_timestamp = new Date().toISOString();
 
   console.log('Deleting stack: ' + args.stackName);
@@ -54,7 +55,7 @@ const deletestack = async (cfm, args) => {
         console.table('\n' + 'Stack Events for stack: ' + args.stackName, stack_events);
       }
       console.log('Waiting...');
-      await sleep(15000); //15 secs
+      await sleep(refresh_rate);
     }
   }
 

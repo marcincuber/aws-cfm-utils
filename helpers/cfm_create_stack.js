@@ -8,6 +8,7 @@ const createstack = async (cfm, args) => {
   const cTable = require('console.table');
   
   const create_timeout = 3600000; //60 mins
+  const refresh_rate = args.refreshRate * 1000; //convert to ms
   const process_start_timestamp = new Date().toISOString();
 
   let stack_events;
@@ -76,7 +77,7 @@ const createstack = async (cfm, args) => {
         console.table('\n' + 'Stack Events for stack: ' + args.stackName, stack_events);
       }
       console.log('Waiting...');
-      await sleep(15000); //15 secs
+      await sleep(refresh_rate);
     }
   }
 

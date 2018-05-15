@@ -89,6 +89,16 @@ describe('arg', function() {
         assert.equal(argv['stack-name'], 'name');
         assert.equal(argv['stack-events'], undefined);
       });
+      it('takes --refresh-rate', function() {
+        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--refresh-rate', '50']);
+        assert.equal(argv['stack-name'], 'name');
+        assert.equal(argv['refresh-rate'], 50);
+      });
+      it('does not take --refresh-rate', function() {
+        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name']);
+        assert.equal(argv['stack-name'], 'name');
+        assert.equal(argv['refresh-rate'], 15);
+      });
     });
   });
   describe('other', function() {
