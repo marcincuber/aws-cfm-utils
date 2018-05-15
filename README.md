@@ -57,12 +57,12 @@ Version: aws-cfm-utils --version
 ```
   Options:
     --stack-name                                               [string] [required]
-    --template-body                    CFM template file name             [string]
-    --stack-policy-body                Stack policy file name             [string]
-    --accesskeyid                      AWS access key                     [string]
-    --secretkey                        AWS secret key                     [string]
-    --parameters                       CFM Parameters                      [array]
-    --tags                             CFM Tags                            [array]
+    --template-body                                                       [string]
+    --stack-policy-body                                                   [string]
+    --accesskeyid                                                         [string]
+    --secretkey                                                           [string]
+    --parameters                                                           [array]
+    --tags                                                                 [array]
     --region                                       [string] [default: "eu-west-1"]
     --capabilities     [array] [choices: "CAPABILITY_NAMED_IAM", "CAPABILITY_IAM"]
     --profile                                                             [string]
@@ -79,6 +79,7 @@ Version: aws-cfm-utils --version
     --stack-policy-during-update-url                                      [string]
     --enable-termination-protection                                      [boolean]
     --stack-events                                                       [boolean]
+    --refresh-rate                                          [number] [default: 15]
     -v, --version                      Show version number               [boolean]
     -h, --help                         Show help                         [boolean]
 ```
@@ -86,7 +87,7 @@ Version: aws-cfm-utils --version
 ### CLI Examples <a name="cli-examples"></a>
 
 ```
-1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true
+1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true --refresh-rate 30
 
 2. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters file://test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
     
@@ -176,6 +177,12 @@ Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::Subnet   
 Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PublicRouteTable
 Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTable        PrivateRouteTable2
 ...
+```
+
+To customise CLI's refresh rate of logging use;
+
+```
+--refresh-rate // takes value in seconds, it is optional and default value is 15 seconds 
 ```
 
 ### Credential settings, General order of execution <a name="credentials"></a>
