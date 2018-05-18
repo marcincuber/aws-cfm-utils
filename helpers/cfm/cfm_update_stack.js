@@ -1,8 +1,11 @@
 'use strict';
 
-const updatestack = async (cfm, args) => {
+const updatestack = async (asg, cfm, args) => {
   const { describestack } = require('./cfm_describe_stack.js');
   const { returnstackevents } = require('./cfm_describe_stack_events.js');
+  const { suspendScheduledActions } = require('../asg/suspend_scheduled_actions.js');
+  const { resumeScheduledActions } = require('../asg/resume_scheduled_actions.js');
+
   const sleep = require('util').promisify(setTimeout);
   // eslint-disable-next-line no-alert, quotes, semi, no-unused-vars
   const cTable = require('console.table');
@@ -50,6 +53,8 @@ const updatestack = async (cfm, args) => {
     }));
   }
 
+  await suspendScheduledActions(asg, cfm, args.stackName);
+
   try {
     await cfm.updateStack(params).promise();
   } 
@@ -95,6 +100,7 @@ const updatestack = async (cfm, args) => {
     process.exit(1);
   }
 
+  await resumeScheduledActions(asg, cfm, args.stackName);
   console.log('Success - Stack Updated successfully! \n');
   process.exit(0);
 };

@@ -6,10 +6,10 @@ const { prexit } = require('./pre-exit.js');
 const { cliopts } = require('./lib/cli_options.js');
 const { processopts } = require('./lib/process_cli_options.js');
 
-const { describestack } = require('./helpers/cfm_describe_stack.js'); //describestack(cfm, stackname)
-const { deletestack } = require('./helpers/cfm_delete_stack.js'); //deletestack(cfm, stackname)
-const { createstack } = require('./helpers/cfm_create_stack.js'); //createstack(cfm, args)
-const { updatestack } = require('./helpers/cfm_update_stack.js'); //updatestack(cfm, args)
+const { describestack } = require('./helpers/cfm/cfm_describe_stack.js'); //describestack(cfm, stackname)
+const { deletestack } = require('./helpers/cfm/cfm_delete_stack.js'); //deletestack(cfm, stackname)
+const { createstack } = require('./helpers/cfm/cfm_create_stack.js'); //createstack(cfm, args)
+const { updatestack } = require('./helpers/cfm/cfm_update_stack.js'); //updatestack(cfm, args)
 
 const cfmclient = (args) => {
   const options = {
@@ -29,7 +29,25 @@ const cfmclient = (args) => {
   return new AWS.CloudFormation(options);
 };
 
-const main = async (cfm, args) => {
+const asgclient = (args) => {
+  const options = {
+    apiVersion: '2011-01-01',
+    region: args.region
+  };
+
+  if (args.profile !== undefined) {
+    options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
+  }
+
+  if (args.accesskeyid !== undefined && args.secretkey !== undefined) {
+    options.accessKeyId = args.accesskeyid;
+    options.secretAccessKey = args.secretkey;
+  }
+
+  return new AWS.AutoScaling(options);
+};
+
+const main = async (asg, cfm, args) => {
   const stack_status = await describestack(cfm, args.stackName);
 
   if (stack_status != 400) {
@@ -38,19 +56,19 @@ const main = async (cfm, args) => {
 
       switch (stack_status) {
       case 'CREATE_COMPLETE':
-        await updatestack(cfm, args);
+        await updatestack(asg, cfm, args);
         break;
       case 'UPDATE_COMPLETE':
-        await updatestack(cfm, args);
+        await updatestack(asg, cfm, args);
         break;
       case 'ROLLBACK_COMPLETE':
-        await updatestack(cfm, args);
+        await updatestack(asg, cfm, args);
         break;
       case 'UPDATE_ROLLBACK_COMPLETE':
-        await updatestack(cfm, args);
+        await updatestack(asg, cfm, args);
         break;
       case 'UPDATE_ROLLBACK_FAILED':
-        await updatestack(cfm, args);
+        await updatestack(asg, cfm, args);
         break;
       case 'CREATE_FAILED':
         await deletestack(cfm, args);
@@ -81,11 +99,12 @@ const main = async (cfm, args) => {
 const input_args = process.argv;
 const args = processopts(cliopts(input_args));
 
-// Create AWS.CloudFormation client for specified region/profile
+// Create AWS.CloudFormation and AWS.AutoScaling clients
+const asg = asgclient(args);
 const cfm = cfmclient(args);
 
 // Pre-exit scripts, clean-up script
 prexit(cfm, args.stackName);
 
 // Create/Update cloudformation stack using input args and cfm client
-main(cfm, args);
+main(asg, cfm, args);
