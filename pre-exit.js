@@ -1,7 +1,7 @@
 'use strict';
 
 const prexit = async (cfm, stackname) => {
-  const { describestack } = require('./helpers/cfm_describe_stack.js');
+  const { describestack } = require('./helpers/cfm/cfm_describe_stack.js');
   const sleep = require('util').promisify(setTimeout);
   const rollback_timeout = 600000;
 
