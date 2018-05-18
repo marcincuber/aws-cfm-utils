@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const AWS = require('aws-sdk');
+const proxy = require('proxy-agent');
 
 const { prexit } = require('./pre-exit.js');
 const { cliopts } = require('./lib/cli_options.js');
@@ -16,6 +17,10 @@ const cfmclient = (args) => {
     apiVersion: '2010-05-15',
     region: args.region
   };
+
+  if (process.env.HTTPS_PROXY) {
+    options.httpOptions = {agent: proxy(process.env.HTTPS_PROXY)};
+  }
 
   if (args.profile !== undefined) {
     options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
@@ -34,6 +39,14 @@ const asgclient = (args) => {
     apiVersion: '2011-01-01',
     region: args.region
   };
+
+  if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
+    process.env.AWS_REGION = process.env.AWS_DEFAULT_REGION;
+  }
+
+  if (process.env.HTTPS_PROXY) {
+    options.httpOptions = {agent: proxy(process.env.HTTPS_PROXY)};
+  }
 
   if (args.profile !== undefined) {
     options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});

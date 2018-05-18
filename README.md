@@ -23,6 +23,7 @@
     * [Create Stack Parameters](#create-stack-parameters)
     * [Upadte Stack Parameters](#update-stack-parameters)
     * [Additional Stack Parameters](#additional-stack-parameters)
+    * [CLI's Environment Variables](#environment-variables)
     * [AWS Credential Info](#credentials)
 * [Tests](#tests)
     * [Unit Tests](#unit-tests)
@@ -185,6 +186,16 @@ To customise CLI's refresh rate of logging use;
 --refresh-rate // takes value in seconds, it is optional and default value is 15 seconds 
 ```
 
+### CLI's Environment variables <a name="environment-variables"></a>
+
+CLI handles the following optional variables;
+
+```
+AWS_REGION or AWS_DEFAULT_REGION
+HTTPS_PROXY
+AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN
+```
+
 ### Credential settings, General order of execution <a name="credentials"></a>
 
 The AWS CLI looks for credentials and configuration settings in the following order:
@@ -251,6 +262,7 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 2. util
 3. yargs
 4. console.table
+5. proxy-agent
 
 [See Dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils)
 
