@@ -53,7 +53,12 @@ const updatestack = async (asg, cfm, args) => {
     }));
   }
 
-  await suspendScheduledActions(asg, cfm, args.stackName);
+  try {
+    await suspendScheduledActions(asg, cfm, args.stackName);
+  }
+  catch (err) {
+    console.error(err);
+  }
 
   try {
     await cfm.updateStack(params).promise();
@@ -100,7 +105,13 @@ const updatestack = async (asg, cfm, args) => {
     process.exit(1);
   }
 
-  await resumeScheduledActions(asg, cfm, args.stackName);
+  try {
+    await resumeScheduledActions(asg, cfm, args.stackName);
+  }
+  catch (err) {
+    console.error(err);
+  }
+  
   console.log('Success - Stack Updated successfully! \n');
   process.exit(0);
 };
