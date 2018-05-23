@@ -53,12 +53,8 @@ const updatestack = async (asg, cfm, args) => {
     }));
   }
 
-  try {
-    await suspendScheduledActions(asg, cfm, args.stackName);
-  }
-  catch (err) {
-    console.error(err);
-  }
+  console.log('Suspending ASG actions...');
+  await suspendScheduledActions(asg, cfm, args.stackName);
 
   try {
     await cfm.updateStack(params).promise();
@@ -66,9 +62,11 @@ const updatestack = async (asg, cfm, args) => {
   catch (err) {
     if (err == 'ValidationError: No updates are to be performed.') { 
       console.log('Update not required. No changes to the cfm stack! ' + err + '\n');
+      await resumeScheduledActions(asg, cfm, args.stackName);
       process.exit(0);
     }
     console.error('Exiting with error type: ' + err.stack);
+    await resumeScheduledActions(asg, cfm, args.stackName);
     process.exit(2);
   }
 
@@ -87,6 +85,7 @@ const updatestack = async (asg, cfm, args) => {
 
     if (count > update_timeout * 60 / 10) {
       console.log('Aborting - Timeout while updating');
+      await resumeScheduledActions(asg, cfm, args.stackName);
       process.exit(1);
     } 
     else {
@@ -102,15 +101,12 @@ const updatestack = async (asg, cfm, args) => {
 
   if (stack_status != 'UPDATE_COMPLETE') {
     console.log('Failure - Stack update unsuccessful');
+    await resumeScheduledActions(asg, cfm, args.stackName);
     process.exit(1);
   }
 
-  try {
-    await resumeScheduledActions(asg, cfm, args.stackName);
-  }
-  catch (err) {
-    console.error(err);
-  }
+  console.log('Resuming ASG actions...');
+  await resumeScheduledActions(asg, cfm, args.stackName);
   
   console.log('Success - Stack Updated successfully! \n');
   process.exit(0);

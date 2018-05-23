@@ -7,8 +7,6 @@ const suspendScheduledActions = async (asg, cfm, stackname) => {
 
   const asg_timeout = 600000; //10 mins
 
-  await sleep(10000);
-
   try {
     const autoScalingGroups = await getAutoScalingGroups(cfm, stackname);
 
@@ -41,20 +39,15 @@ const suspendScheduledActions = async (asg, cfm, stackname) => {
 
         if (asgStatus[0].ProcessName === 'ScheduledActions') {
           console.log('Suspended ASG ScheduledActions in: ' + group);
-          return true;
         }
-        else {
-          return false;
-        }
-
       }
       catch (err) {
-        return err.stack;
+        console.error(err);
       }
     });
   }
   catch (err) {
-    return err.stack;
+    console.error(err);
   }
 };
 
