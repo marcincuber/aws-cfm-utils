@@ -3,33 +3,28 @@
 const resumeScheduledActions = async (asg, cfm, stackname) => {
   const { getAutoScalingGroups } = require('../cfm/get_auto_scalling_groups.js');
   const { describeAutoScallingGroup } = require('./describe_autoscalling_group.js');
+  const sleep = require('util').promisify(setTimeout);
 
-  try {
-    const autoScalingGroups = await getAutoScalingGroups(cfm, stackname);
+  const autoScalingGroups = await getAutoScalingGroups(cfm, stackname);
 
-    autoScalingGroups.forEach(async (group) => {
-      let asgStatus;
+  autoScalingGroups.forEach(async (group) => {
+    let asgStatus;
 
-      try {
-        asgStatus = await describeAutoScallingGroup(asg, group);
-        while (asgStatus[0].ProcessName === 'ScheduledActions') {
-          console.log('Resuming ASG ScheduledActions in: ' + group);
-          
-          await asg.resumeProcesses({
-            AutoScalingGroupName: group, ScalingProcesses: ['ScheduledActions']
-          }).promise();
+    asgStatus = await describeAutoScallingGroup(asg, group);
 
-          asgStatus = await describeAutoScallingGroup(asg, group);
-        }
-      }
-      catch (err) {
-        return err.stack;
-      }
-    });
-  }
-  catch (err) {
-    return err.stack;
-  }
+    await asg.resumeProcesses({
+      AutoScalingGroupName: group, ScalingProcesses: ['ScheduledActions']
+    }).promise();
+
+    await sleep(1000);
+    asgStatus = await describeAutoScallingGroup(asg, group);
+
+    if (asgStatus == undefined || asgStatus === '' || asgStatus.length === 0) {
+      console.log('Resumed ASG ScheduledActions in: ' + group);
+    }
+  });
+
+  await sleep(10000);
 };
 
 module.exports = {

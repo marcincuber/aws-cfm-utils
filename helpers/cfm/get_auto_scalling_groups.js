@@ -19,7 +19,7 @@ const getAutoScalingGroups = async (cfm, stackname) => {
     return Promise.all(stackRequests).then(stacks => [].concat(...stacks));
   }
   catch (err) {
-    return err.stack;
+    console.error(err);
   }
 };
 
