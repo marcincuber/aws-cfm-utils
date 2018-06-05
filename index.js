@@ -18,6 +18,10 @@ const cfmclient = (args) => {
     region: args.region
   };
 
+  if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
+    process.env.AWS_REGION = process.env.AWS_DEFAULT_REGION;
+  }
+
   if (process.env.HTTPS_PROXY) {
     options.httpOptions = {agent: proxy(process.env.HTTPS_PROXY)};
   }

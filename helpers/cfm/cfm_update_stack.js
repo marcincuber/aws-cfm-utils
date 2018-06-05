@@ -75,9 +75,7 @@ const updatestack = async (asg, cfm, args) => {
   //Wait for stack update
   while (stack_status === 'UPDATE_IN_PROGRESS' || 
     stack_status === 'CREATE_COMPLETE' || 
-    stack_status === 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS' || 
-    stack_status === 'UPDATE_ROLLBACK_COMPLETE' ||
-    stack_status === 'UPDATE_ROLLBACK_FAILED') {
+    stack_status === 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS') {
     
     count = count++;
     stack_status = await describestack(cfm, args.stackName);
@@ -99,8 +97,22 @@ const updatestack = async (asg, cfm, args) => {
     }
   }
 
+  stack_status = await describestack(cfm, args.stackName);
+
+  if (stack_status === 'UPDATE_ROLLBACK_COMPLETE') {
+    console.error('Update Failure - Update Rollback Completed successfully!');
+    await resumeScheduledActions(asg, cfm, args.stackName);
+    process.exit(1);
+  }
+
+  if (stack_status === 'UPDATE_ROLLBACK_FAILED') {
+    console.error('Update Failure - Update Rollback Failed!');
+    await resumeScheduledActions(asg, cfm, args.stackName);
+    process.exit(1);
+  }
+
   if (stack_status != 'UPDATE_COMPLETE') {
-    console.log('Failure - Stack update unsuccessful');
+    console.error('Failure - Stack update unsuccessful');
     await resumeScheduledActions(asg, cfm, args.stackName);
     process.exit(1);
   }
