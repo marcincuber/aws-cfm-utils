@@ -117,7 +117,7 @@ In general, please use `/"your_values/"` for `--parameters` or `--tags` to ensur
 
 ### Read from file support <a name="read-from-file"></a>
 
-The following CLI options supprt `read file from disk`:
+The following CLI options support `read file from disk`:
 
 ``--tempate-body --stack-policy-body --parameters --tags``
 
