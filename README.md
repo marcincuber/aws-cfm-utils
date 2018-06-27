@@ -259,10 +259,9 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 ### Dependencies <a name="prod-dependencies"></a>
 
 1. aws-sdk
-2. util
-3. yargs
-4. console.table
-5. proxy-agent
+2. yargs
+3. console.table
+4. proxy-agent
 
 [See Dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils)
 
