@@ -21,21 +21,28 @@
 * [Parameter Options](#parameter-options)
     * [Global Parameters](#global-parameters)
     * [Create Stack Parameters](#create-stack-parameters)
-    * [Upadte Stack Parameters](#update-stack-parameters)
+    * [Update Stack Parameters](#update-stack-parameters)
     * [Additional Stack Parameters](#additional-stack-parameters)
     * [CLI's Environment Variables](#environment-variables)
     * [AWS Credential Info](#credentials)
 * [Tests](#tests)
     * [Unit Tests](#unit-tests)
     * [Linting](#eslint)
-    * [Node Modules security](#nsp)
+    * [Node Modules Security](#nsp)
     * [Coverage](#coverage)
     * [Build Server](#build-server)
     * [Software License Scanning](#license-scan)
 * [Requirements and Dependencies](#requirements-dependencies)
     * [Dependencies](#prod-dependencies)
     * [DevDependencies](#dev-dependencies)
+    * [Trouble Troubleshoot](#trouble-troubleshoot)
 * [Contact](#contact)
+
+## Purpose of aws-cfm-utils cli
+
+Deployment of Cloudformation stacks/templates through an automated pipeline requires you to face a challenge of creating a CloudFormation stack on the first run and later only update it in the following pipeline runs. AWS CLI will not let you do it with a single command! Additionally, stack status not reported at any point when you try to create-stack or update-stack using AWS CLI. `aws-cfm-utils` cli resolves all those limitations. 
+
+`aws-cfm-utils` creates or updates a CloudFormation stack without additional commands being used. If no updates are to be performed, no error is thrown. `aws-cfm-utils` behaves exactly as the AWS CLI regarding input values, output will be different. Also, improved handling of stack-status reporting during the deployment process is available.
 
 ## Installation <a name="installation"></a>
 
@@ -279,6 +286,10 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 10. sinon
 
 [See DevDependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils?type=dev)
+
+## Trouble troubleshoot <a name="trouble-troubleshoot"></a>
+
+Commonly seen error is when `stack-status` is returning `undifined`. It means that your deployment `credentials are incorrectly set` or `--profile, --accesskeyid, --secretkey` were not passed.
 
 ## Contact <a name="contact"></a>
 
