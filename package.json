@@ -1,6 +1,6 @@
 {
   "name": "aws-cfm-utils",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "AWS utils to deploy cloudformation stack/templates",
   "main": "index.js",
   "keywords": [
@@ -32,19 +32,19 @@
   "author": "Marcin Cuber <marcincuber@hotmail.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.264.1",
+    "aws-sdk": "^2.306.0",
     "console.table": "^0.10.0",
     "proxy-agent": "^3.0.0",
-    "yargs": "^11.0.0"
+    "yargs": "^12.0.1"
   },
   "devDependencies": {
-    "coveralls": "^3.0.1",
+    "coveralls": "^3.0.2",
     "eslint": "^5.0.1",
-    "eslint-config-standard": "^11.0.0",
+    "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.1.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1",
     "sinon": "^6.0.1"
