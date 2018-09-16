@@ -12,10 +12,11 @@ const { deletestack } = require('./helpers/cfm/cfm_delete_stack.js'); //deletest
 const { createstack } = require('./helpers/cfm/cfm_create_stack.js'); //createstack(cfm, args)
 const { updatestack } = require('./helpers/cfm/cfm_update_stack.js'); //updatestack(cfm, args)
 
+require('dotenv').config();
+
 const cfmclient = (args) => {
   const options = {
-    apiVersion: '2010-05-15',
-    region: args.region
+    apiVersion: '2010-05-15'
   };
 
   if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
@@ -28,7 +29,11 @@ const cfmclient = (args) => {
 
   if (args.profile !== undefined) {
     options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
-  }
+  } 
+
+  if (args.region !== undefined) {
+    options.region = args.region;
+  } 
 
   if (args.accesskeyid !== undefined && args.secretkey !== undefined) {
     options.accessKeyId = args.accesskeyid;
@@ -40,8 +45,7 @@ const cfmclient = (args) => {
 
 const asgclient = (args) => {
   const options = {
-    apiVersion: '2011-01-01',
-    region: args.region
+    apiVersion: '2011-01-01'
   };
 
   if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
@@ -54,6 +58,10 @@ const asgclient = (args) => {
 
   if (args.profile !== undefined) {
     options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
+  }
+
+  if (args.region !== undefined) {
+    options.region = args.region;
   }
 
   if (args.accesskeyid !== undefined && args.secretkey !== undefined) {

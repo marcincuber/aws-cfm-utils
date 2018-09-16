@@ -203,6 +203,15 @@ HTTPS_PROXY
 AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN
 ```
 
+CLI supports easy deployments from local or CI environments and uses `.env` if available. 
+
+Create a `.env` file in the root directory of your project. Add environment-specific variables on new lines in the form of NAME=VALUE. For example:
+
+```
+AWS_PROFILE=test
+AWS_REGION=eu-west-1
+```
+
 ### Credential settings, General order of execution <a name="credentials"></a>
 
 The AWS CLI looks for credentials and configuration settings in the following order:
@@ -269,6 +278,7 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 2. yargs
 3. console.table
 4. proxy-agent
+5. dotenv
 
 [See Dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils)
 
