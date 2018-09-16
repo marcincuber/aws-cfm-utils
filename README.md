@@ -35,7 +35,7 @@
 * [Requirements and Dependencies](#requirements-dependencies)
     * [Dependencies](#prod-dependencies)
     * [DevDependencies](#dev-dependencies)
-    * [Trouble Troubleshoot](#trouble-troubleshoot)
+    * [Troubleshoot](#troubleshoot)
 * [Contact](#contact)
 
 ## Purpose of aws-cfm-utils cli
@@ -297,14 +297,20 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 
 [See DevDependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils?type=dev)
 
-## Trouble troubleshoot <a name="trouble-troubleshoot"></a>
+## Troubleshoot <a name="troubleshoot"></a>
 
 Commonly seen error is when `stack-status` is returning `undifined`. It means that your deployment `credentials are incorrectly set` or `--profile, --accesskeyid, --secretkey` were not passed.
+
+## Generating change log <a name="trouble-troubleshoot"></a>
+
+```
+[sudo] gem install github_changelog_generator # install gem
+github_changelog_generator marcincuber/aws-cfm-utils # generate for this repo
+```
 
 ## Contact <a name="contact"></a>
 
 If you have any questions, drop me an email marcincuber@hotmail.com or open an issue and leave stars! :)
-
 
 ## License Status <a name="license-status"></a>
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcincuber%2Faws-cfm-utils?ref=badge_large)
