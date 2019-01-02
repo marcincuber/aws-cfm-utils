@@ -17,11 +17,11 @@ describe('arg', function() {
       assert.equal(argv['stack-name'], 'name');
     });
     it('common', function() {
-      const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', '--stack-events', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
+      const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND', '--stack-events', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
       assert.equal(argv['stack-name'], 'name');
       assert.equal(argv['template-url'], 'url');
       assert.deepEqual(argv['parameters'], ['ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value']);
-      assert.deepEqual(argv['capabilities'], ['CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM']);
+      assert.deepEqual(argv['capabilities'], ['CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']);
       assert.deepEqual(argv['resource-types'], ['type1', 'type2']);
       assert.equal(argv['role-arn'], 'arn');
       assert.equal(argv['stack-policy-url'], 'url');
@@ -122,34 +122,34 @@ describe('arg', function() {
           assert.equal(argv['secretkey'], 'AWS_SECRET_KEY');
       });
       it('errors when accesskeyid is passed without secretkey', function() {
-        assert.throws(function() { 
+        assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--accesskeyid', 'AWS_KEY_ID']);
         }, Error);
       });
       it('errors when secretkey is passed without accesskeyid', function() {
-        assert.throws(function() { 
+        assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--secretkey', 'AWS_SECRET_KEY']);
         }, Error);
       });
     });
     describe('conflicting values', function() {
       it('errors when profile and AWS access keys are passed', function() {
-        assert.throws(function() { 
+        assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--profile', 'yourprofilname', '--accesskeyid', 'AWS_KEY_ID', '--secretkey', 'AWS_SECRET_KEY']);
         }, Error);
       });
       it('errors when template-url and template-body are passed', function() {
-        assert.throws(function() { 
+        assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--template-body', 'body']);
         }, Error);
       });
       it('errors when template-url and template-body are passed', function() {
-        assert.throws(function() { 
+        assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--stack-policy-body', 'policy-body', '--stack-policy-url', 'policy-url']);
         }, Error);
       });
       it('errors when no arguments are passed', function() {
-        assert.throws(function() { 
+        assert.throws(function() {
           cliopts(['/node', 'index.js']);
         }, Error);
       });

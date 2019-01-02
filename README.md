@@ -40,7 +40,7 @@
 
 ## Purpose of aws-cfm-utils cli
 
-Deployment of Cloudformation stacks/templates through an automated pipeline requires you to face a challenge of creating a CloudFormation stack on the first run and later only update it in the following pipeline runs. AWS CLI will not let you do it with a single command! Additionally, stack status not reported at any point when you try to create-stack or update-stack using AWS CLI. `aws-cfm-utils` cli resolves all those limitations. 
+Deployment of Cloudformation stacks/templates through an automated pipeline requires you to face a challenge of creating a CloudFormation stack on the first run and later only update it in the following pipeline runs. AWS CLI will not let you do it with a single command! Additionally, stack status not reported at any point when you try to create-stack or update-stack using AWS CLI. `aws-cfm-utils` cli resolves all those limitations.
 
 `aws-cfm-utils` creates or updates a CloudFormation stack without additional commands being used. If no updates are to be performed, no error is thrown. `aws-cfm-utils` behaves exactly as the AWS CLI regarding input values, output will be different. Also, improved handling of stack-status reporting during the deployment process is available.
 
@@ -64,32 +64,32 @@ Version: aws-cfm-utils --version
 
 ```
   Options:
-    --stack-name                                               [string] [required]
-    --template-body                                                       [string]
-    --stack-policy-body                                                   [string]
-    --accesskeyid                                                         [string]
-    --secretkey                                                           [string]
-    --parameters                                                           [array]
-    --tags                                                                 [array]
-    --region                                       [string] [default: "eu-west-1"]
-    --capabilities     [array] [choices: "CAPABILITY_NAMED_IAM", "CAPABILITY_IAM"]
-    --profile                                                             [string]
-    --role-arn                                                            [string]
-    --resource-types                                                       [array]
-    --disable-rollback                                                   [boolean]
-    --template-url                                                        [string]
-    --stack-policy-url                                                    [string]
-    --notification-arns                                                    [array]
-    --timeout-in-minutes                                                  [number]
-    --on-failure            [string] [choices: "DO_NOTHING", "ROLLBACK", "DELETE"]
-    --use-previous-template                                              [boolean]
-    --stack-policy-during-update-body                                     [string]
-    --stack-policy-during-update-url                                      [string]
-    --enable-termination-protection                                      [boolean]
-    --stack-events                                                       [boolean]
-    --refresh-rate                                          [number] [default: 15]
-    -v, --version                      Show version number               [boolean]
-    -h, --help                         Show help                         [boolean]
+    --stack-name                                                                         [string] [required]
+    --template-body                                                                                 [string]
+    --stack-policy-body                                                                             [string]
+    --accesskeyid                                                                                   [string]
+    --secretkey                                                                                     [string]
+    --parameters                                                                                     [array]
+    --tags                                                                                           [array]
+    --region                                                                 [string] [default: "eu-west-1"]
+    --capabilities     [array] [choices: "CAPABILITY_NAMED_IAM", "CAPABILITY_IAM", "CAPABILITY_AUTO_EXPAND"]
+    --profile                                                                                       [string]
+    --role-arn                                                                                      [string]
+    --resource-types                                                                                 [array]
+    --disable-rollback                                                                             [boolean]
+    --template-url                                                                                  [string]
+    --stack-policy-url                                                                              [string]
+    --notification-arns                                                                              [array]
+    --timeout-in-minutes                                                                            [number]
+    --on-failure                                      [string] [choices: "DO_NOTHING", "ROLLBACK", "DELETE"]
+    --use-previous-template                                                                        [boolean]
+    --stack-policy-during-update-body                                                               [string]
+    --stack-policy-during-update-url                                                                [string]
+    --enable-termination-protection                                                                [boolean]
+    --stack-events                                                                                 [boolean]
+    --refresh-rate                                                                    [number] [default: 15]
+    -v, --version                                                Show version number               [boolean]
+    -h, --help                                                   Show help                         [boolean]
 ```
 
 ### CLI Examples <a name="cli-examples"></a>
@@ -98,9 +98,9 @@ Version: aws-cfm-utils --version
 1. aws-cfm-utils --stack-name stackname --template-body cfmtemplate --stack-policy-body stackpolicy --region eu-west-1 --enable-termination-protection true --refresh-rate 30
 
 2. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters file://test/fixtures/parameters.json --tags Key=TestTag,Value=TestTagValue Key=TestTag2,Value=TestTagValue2 Key=TestTag3,Value=TestTagValue4
-    
+
 3. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection true --region eu-west-1 --parameters file://test/fixtures/parameters.json --tags file://test/fixtures/tags.json
-    
+
 4. aws-cfm-utils --stack-name mynewstack --template-body file://test/fixtures/template.json --stack-policy-body file://test/fixtures/stackpolicy.json --enable-termination-protection --region eu-west-1 --parameters ParameterKey=TestName,ParameterValue=TestKey ParameterKey=TestName2,ParameterValue=TestKey2
 
 // More complicated ParameterValues in the following two examples, ensure to escape double quotes
@@ -135,9 +135,9 @@ Simply use the ``file://{DIR_FILENME}``. See section above for examples.
 ### Global parameters ([AWS CLI Docs](http://docs.aws.amazon.com/cli/latest/topic/config-vars.html#general-options)): <a name="global-parameters"></a>
 
 ```
---accesskeyid 
---secretkey 
---profile 
+--accesskeyid
+--secretkey
+--profile
 --region // defaults to Ireland region eu-west-1
 ```
 
@@ -190,7 +190,7 @@ Sun May 13 2018 03:51:15 GMT+0100 (BST)  UPDATE_COMPLETE     AWS::EC2::RouteTabl
 To customise CLI's refresh rate of logging use;
 
 ```
---refresh-rate // takes value in seconds, it is optional and default value is 15 seconds 
+--refresh-rate // takes value in seconds, it is optional and default value is 15 seconds
 ```
 
 ### CLI's Environment variables <a name="environment-variables"></a>
@@ -203,7 +203,7 @@ HTTPS_PROXY
 AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN
 ```
 
-CLI supports easy deployments from local or CI environments and uses `.env` if available. 
+CLI supports easy deployments from local or CI environments and uses `.env` if available.
 
 Create a `.env` file in the root directory of your project. Add environment-specific variables on new lines in the form of NAME=VALUE. For example:
 
@@ -240,7 +240,7 @@ npm run lint
 
 ### Node Modules security <a name="nsp"></a>
 
-We use tool called `Snyk.io` to scan node moduless. [See Snyk.io](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json) 
+We use tool called `Snyk.io` to scan node moduless. [See Snyk.io](https://snyk.io/test/github/marcincuber/aws-cfm-utils?targetFile=package.json)
 
 ### Code Coverage <a name="coverage"></a>
 
