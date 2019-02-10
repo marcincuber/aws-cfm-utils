@@ -121,6 +121,14 @@ describe('arg', function() {
           assert.equal(argv['accesskeyid'], 'AWS_KEY_ID');
           assert.equal(argv['secretkey'], 'AWS_SECRET_KEY');
       });
+      it('takes AWS keys credentials and sessiontoken', function() {
+        const argv = cliopts(['/node', 'index.js', '--accesskeyid', 'AWS_KEY_ID', '--secretkey', 'AWS_SECRET_KEY', '--stack-name', 'name', '--sessiontoken', 'random_£$%!2341STR']);
+          assert.equal(argv['region'], 'eu-west-1');
+          assert.equal(argv['stack-name'], 'name');
+          assert.equal(argv['accesskeyid'], 'AWS_KEY_ID');
+          assert.equal(argv['secretkey'], 'AWS_SECRET_KEY');
+          assert.equal(argv['sessiontoken'], 'random_£$%!2341STR');
+      });
       it('errors when accesskeyid is passed without secretkey', function() {
         assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--accesskeyid', 'AWS_KEY_ID']);
@@ -131,11 +139,36 @@ describe('arg', function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--secretkey', 'AWS_SECRET_KEY']);
         }, Error);
       });
+      it('errors when sessiontoken is passed without accesskeyid and secretkey', function() {
+        assert.throws(function() {
+          cliopts(['/node', 'index.js', '--stack-name', 'name', '--sessiontoken', 'random_£$%!2341STR']);
+        }, Error);
+      });
+      it('errors when sessiontoken is passed without secretkey', function() {
+        assert.throws(function() {
+          cliopts(['/node', 'index.js', '--stack-name', 'name', '--secretkey', 'AWS_SECRET_KEY', '--sessiontoken', 'random_£$%!2341STR']);
+        }, Error);
+      });
+      it('errors when sessiontoken is passed without accesskeyid', function() {
+        assert.throws(function() {
+          cliopts(['/node', 'index.js', '--stack-name', 'name', '--accesskeyid', 'AWS_KEY_ID', '--sessiontoken', 'random_£$%!2341STR']);
+        }, Error);
+      });
     });
     describe('conflicting values', function() {
       it('errors when profile and AWS access keys are passed', function() {
         assert.throws(function() {
           cliopts(['/node', 'index.js', '--stack-name', 'name', '--profile', 'yourprofilname', '--accesskeyid', 'AWS_KEY_ID', '--secretkey', 'AWS_SECRET_KEY']);
+        }, Error);
+      });
+      it('errors when profile and AWS access keys are passed with sessiontoken', function() {
+        assert.throws(function() {
+          cliopts(['/node', 'index.js', '--stack-name', 'name', '--profile', 'yourprofilname', '--accesskeyid', 'AWS_KEY_ID', '--secretkey', 'AWS_SECRET_KEY', '--sessiontoken', 'random_£$%!2341STR']);
+        }, Error);
+      });
+      it('errors when profile and sessiontoken is passed in without AWS access keys', function() {
+        assert.throws(function() {
+          cliopts(['/node', 'index.js', '--stack-name', 'name', '--profile', 'yourprofilname', '--sessiontoken', 'random_£$%!2341STR']);
         }, Error);
       });
       it('errors when template-url and template-body are passed', function() {

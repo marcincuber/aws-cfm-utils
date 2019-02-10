@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 const proxy = require('proxy-agent');
+const inquirer = require('inquirer');
 
 const { prexit } = require('./pre-exit.js');
 const { cliopts } = require('./lib/cli_options.js');
@@ -14,39 +15,34 @@ const { updatestack } = require('./helpers/cfm/cfm_update_stack.js'); //updatest
 
 require('dotenv').config();
 
-const cfmclient = (args) => {
-  const options = {
-    apiVersion: '2010-05-15'
-  };
-
-  if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
-    process.env.AWS_REGION = process.env.AWS_DEFAULT_REGION;
-  }
-
-  if (process.env.HTTPS_PROXY) {
-    options.httpOptions = {agent: proxy(process.env.HTTPS_PROXY)};
-  }
-
-  if (args.profile !== undefined) {
-    options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
-  } 
-
-  if (args.region !== undefined) {
-    options.region = args.region;
-  } 
-
-  if (args.accesskeyid !== undefined && args.secretkey !== undefined) {
-    options.accessKeyId = args.accesskeyid;
-    options.secretAccessKey = args.secretkey;
-  }
-
-  return new AWS.CloudFormation(options);
+const tokenCodeFn = (mfa_serial, callback) => {
+  inquirer.prompt({
+    name: 'mfa_token',
+    type: 'input',
+    default: '',
+    message: `Enter MFA token for ${mfa_serial}:`,
+    validate: (value) => {
+      if (value) {
+        return true;
+      }
+      return 'Please enter a MFA temporary token';
+    }
+  }).then((response) => {
+    callback(null, response.mfa_token);
+  }).catch((err) => {
+    console.error(err);
+    callback(err);
+  });
 };
 
-const asgclient = (args) => {
-  const options = {
-    apiVersion: '2011-01-01'
+const awsClient = async (args) => {
+  // set the API versions
+  AWS.config.apiVersions = {
+    autoscaling: '2011-01-01',
+    cloudformation: '2010-05-15'
   };
+
+  const options = {};
 
   if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
     process.env.AWS_REGION = process.env.AWS_DEFAULT_REGION;
@@ -56,20 +52,34 @@ const asgclient = (args) => {
     options.httpOptions = {agent: proxy(process.env.HTTPS_PROXY)};
   }
 
-  if (args.profile !== undefined) {
-    options.credentials = new AWS.SharedIniFileCredentials({profile: args.profile});
+  if (process.env.AWS_PROFILE !== undefined) {
+    options.credentials = new AWS.SharedIniFileCredentials({tokenCodeFn: tokenCodeFn, profile: process.env.AWS_PROFILE});
+  } else if (args.profile !== undefined) {
+    options.credentials = new AWS.SharedIniFileCredentials({tokenCodeFn: tokenCodeFn, profile: args.profile});
   }
 
   if (args.region !== undefined) {
     options.region = args.region;
-  }
+  } 
 
   if (args.accesskeyid !== undefined && args.secretkey !== undefined) {
     options.accessKeyId = args.accesskeyid;
     options.secretAccessKey = args.secretkey;
   }
 
-  return new AWS.AutoScaling(options);
+  if (args.sessiontoken !== undefined) {
+    options.sessionToken = args.sessiontoken;
+  }
+
+  try {
+    const asg = await new AWS.AutoScaling(options);
+    const cfm = await new AWS.CloudFormation(options);
+    return {asgClient: asg, cfmClient: cfm};
+  }
+  catch (err) {
+    console.error('Exiting with error: ' + err.stack);
+    process.exit(2);
+  }
 };
 
 const main = async (asg, cfm, args) => {
@@ -124,12 +134,8 @@ const main = async (asg, cfm, args) => {
 const input_args = process.argv;
 const args = processopts(cliopts(input_args));
 
-// Create AWS.CloudFormation and AWS.AutoScaling clients
-const asg = asgclient(args);
-const cfm = cfmclient(args);
-
-// Pre-exit scripts, clean-up script
-prexit(cfm, args.stackName);
-
-// Create/Update cloudformation stack using input args and cfm client
-main(asg, cfm, args);
+(async function() {
+  const {asgClient, cfmClient} = await awsClient(args);
+  await prexit(cfmClient, args.stackName);
+  await main(asgClient, cfmClient, args);
+})();

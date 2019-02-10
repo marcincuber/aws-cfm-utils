@@ -291,6 +291,22 @@ describe('processopts', function() {
         assert.deepEqual(argv.secretkey, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
       });
     });
+    describe('sessiontoken', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'sessiontoken': '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.sessiontoken, '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas');
+      });
+      it('handles escaped quotes as args', function() {
+        const argv = processopts({
+          'sessiontoken': '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.sessiontoken, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
+      });
+    });
     describe('region', function() {
       it('handles as args', function() {
         const argv = processopts({
@@ -305,7 +321,7 @@ describe('processopts', function() {
         const argv = processopts({
           'template-body': 'file://test/fixtures/short-template-body.json'
         });
-        assert.deepEqual(argv.templateBody, '{\n  \"AWSTemplateFormatVersion\": \"2010-09-09\",\n  \"Parameters\": {\n    \"KeyName\": {\n      \"Default\": \"TNLDefault\"\n    },\n    \"TestName\": {\n      \"Description\": \"TestName\",\n      \"Type\": \"String\"\n    },\n    \"TestName2\":{\n      \"Description\": \"TestName2\",\n      \"Type\": \"String\"\n    }\n  },\n  \"Mappings\": {\n    \"AWSNATAMI\": {\n      \"eu-west-1\": { \"AMI\": \"ami-785db401\" }\n    },\n    \"AWSRegionArch2AMI\": {\n      \"eu-west-1\": { \"64\": \"ami-785db401\" }\n    }\n  }\n}\n'
+        assert.deepEqual(argv.templateBody, '{\n  \"AWSTemplateFormatVersion\": \"2010-09-09\",\n  \"Parameters\": {\n    \"KeyName\": {\n      \"Default\": \"test-key-pair\"\n    },\n    \"TestName\": {\n      \"Description\": \"TestName\",\n      \"Type\": \"String\"\n    },\n    \"TestName2\":{\n      \"Description\": \"TestName2\",\n      \"Type\": \"String\"\n    }\n  },\n  \"Mappings\": {\n    \"AWSNATAMI\": {\n      \"eu-west-1\": { \"AMI\": \"ami-785db401\" }\n    },\n    \"AWSRegionArch2AMI\": {\n      \"eu-west-1\": { \"64\": \"ami-785db401\" }\n    }\n  }\n}\n'
         );
       });
     });
