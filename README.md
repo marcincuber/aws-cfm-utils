@@ -313,6 +313,7 @@ We use `FOSSA` system which helps us manage components. It is used to perform dy
 3. console.table
 4. proxy-agent
 5. dotenv
+6. inquirer
 
 [See Dependencies Status](https://david-dm.org/marcincuber/aws-cfm-utils)
 

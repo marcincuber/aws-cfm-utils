@@ -2,12 +2,25 @@
 
 ## [Unreleased](https://github.com/marcincuber/aws-cfm-utils/tree/HEAD)
 
-[Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.6...HEAD)
+[Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.7...HEAD)
+
+**Closed issues:**
+
+- Capabilities options does not accept CAPABILITY\_AUTO\_EXPAND [\#20](https://github.com/marcincuber/aws-cfm-utils/issues/20)
+
+## [v1.6.7](https://github.com/marcincuber/aws-cfm-utils/tree/v1.6.7) (2019-01-02)
+[Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.6...v1.6.7)
 
 **Closed issues:**
 
 - Add support for optional .env config [\#17](https://github.com/marcincuber/aws-cfm-utils/issues/17)
 - Add support for ENV based auth fallback [\#16](https://github.com/marcincuber/aws-cfm-utils/issues/16)
+
+**Merged pull requests:**
+
+- Update package.json [\#22](https://github.com/marcincuber/aws-cfm-utils/pull/22) ([marcincuber](https://github.com/marcincuber))
+- Added support for CAPABILITY\_AUTO\_EXPAND [\#21](https://github.com/marcincuber/aws-cfm-utils/pull/21) ([juhamust](https://github.com/juhamust))
+- Add changelog + info [\#19](https://github.com/marcincuber/aws-cfm-utils/pull/19) ([marcincuber](https://github.com/marcincuber))
 
 ## [v1.6.6](https://github.com/marcincuber/aws-cfm-utils/tree/v1.6.6) (2018-09-16)
 [Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.5...v1.6.6)
