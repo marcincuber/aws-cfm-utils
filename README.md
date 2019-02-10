@@ -24,6 +24,7 @@
     * [Update Stack Parameters](#update-stack-parameters)
     * [Additional Stack Parameters](#additional-stack-parameters)
     * [CLI's Environment Variables](#environment-variables)
+    * [MFA + Assume Role](#mfa)
     * [AWS Credential Info](#credentials)
 * [Tests](#tests)
     * [Unit Tests](#unit-tests)
@@ -69,6 +70,7 @@ Version: aws-cfm-utils --version
     --stack-policy-body                                                                             [string]
     --accesskeyid                                                                                   [string]
     --secretkey                                                                                     [string]
+    --sessiontoken                                                                                  [string]
     --parameters                                                                                     [array]
     --tags                                                                                           [array]
     --region                                                                 [string] [default: "eu-west-1"]
@@ -210,6 +212,38 @@ Create a `.env` file in the root directory of your project. Add environment-spec
 ```
 AWS_PROFILE=test
 AWS_REGION=eu-west-1
+```
+
+### Multi-Factor Authentication enabled for profile <a name="mfa"></a>
+
+In case you are using temporary credentials by assuming a role you will likely want to use it with a `mfa_serial` property, then multi-factor authentication is required. You will be prompt for input of the MFA token.
+
+```
+$ aws-cfm-utils --profile role-name --stack-name myteststack --template-body file://teststack.json
+? Enter MFA token for arn:aws:iam::00000000000:mfa/marcincuber@hotmail.com: ()
+{}
+```
+
+To make use of assume role you can use the following configuration;
+
+```
+# ~/.aws/credentials file
+[dev-role]
+aws_access_key_id = asdasdasdasdasdasdasda
+aws_secret_access_key = asdasdasdasdasdasdasda
+
+[dev-role-assume-role]
+role_arn = arn:aws:iam::0000000000:role/switch-role-test
+source_profile = dev-role
+mfa_serial = arn:aws:iam::0000000000:mfa/marcincuber@hotmail.com
+
+# ~/.aws/config file
+[profile dev-role]
+region=eu-west-1
+output=json
+
+[profile dev-role-assume-role]
+region = eu-west-1
 ```
 
 ### Credential settings, General order of execution <a name="credentials"></a>

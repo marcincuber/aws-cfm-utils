@@ -2,7 +2,7 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "KeyName": {
-      "Default": "TNLDefault"
+      "Default": "test-key-pair"
     },
     "TestName": {
       "Description": "TestName",

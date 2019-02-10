@@ -59,7 +59,6 @@ const prexit = async (cfm, stackname) => {
   process.stdin.resume();
 
   process.on('exit', () => {
-    console.log('Process exit');
     process.exit(0);
   });
 
