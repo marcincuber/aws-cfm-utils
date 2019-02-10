@@ -291,6 +291,22 @@ describe('processopts', function() {
         assert.deepEqual(argv.secretkey, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
       });
     });
+    describe('sessiontoken', function() {
+      it('handles as args', function() {
+        const argv = processopts({
+          'sessiontoken': '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.sessiontoken, '/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas');
+      });
+      it('handles escaped quotes as args', function() {
+        const argv = processopts({
+          'sessiontoken': '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.sessiontoken, '\"/+-sadasd213123,123as=dPOhrP9+4xW8z7v3hdas\"');
+      });
+    });
     describe('region', function() {
       it('handles as args', function() {
         const argv = processopts({
