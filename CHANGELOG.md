@@ -2,11 +2,22 @@
 
 ## [Unreleased](https://github.com/marcincuber/aws-cfm-utils/tree/HEAD)
 
-[Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.7...HEAD)
+[Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.7.0...HEAD)
+
+**Closed issues:**
+
+- Script does not work with config profile + credential  [\#23](https://github.com/marcincuber/aws-cfm-utils/issues/23)
+
+## [v1.7.0](https://github.com/marcincuber/aws-cfm-utils/tree/v1.7.0) (2019-02-10)
+[Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.7...v1.7.0)
 
 **Closed issues:**
 
 - Capabilities options does not accept CAPABILITY\_AUTO\_EXPAND [\#20](https://github.com/marcincuber/aws-cfm-utils/issues/20)
+
+**Merged pull requests:**
+
+- Feat/mfa [\#24](https://github.com/marcincuber/aws-cfm-utils/pull/24) ([marcincuber](https://github.com/marcincuber))
 
 ## [v1.6.7](https://github.com/marcincuber/aws-cfm-utils/tree/v1.6.7) (2019-01-02)
 [Full Changelog](https://github.com/marcincuber/aws-cfm-utils/compare/v1.6.6...v1.6.7)
