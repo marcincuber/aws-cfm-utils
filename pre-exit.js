@@ -52,7 +52,9 @@ const prexit = async (cfm, stackname) => {
     if (stack_status === 'UPDATE_ROLLBACK_FAILED') {
       console.log('Rollback Failed! Exiting.');
     }
-
+    if (stack_status === 'CREATE_IN_PROGRESS') {
+      console.log('Stack is still creating. Review the stack in AWS console. Exiting.');
+    }
   };
 
   // Catch exit

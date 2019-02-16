@@ -15,9 +15,10 @@ describe('arg', function() {
       assert.equal(argv['region'], 'eu-west-2');
       assert.equal(argv['profile'], 'profile');
       assert.equal(argv['stack-name'], 'name');
+      assert.equal(argv['suspend-scheduled-actions'], true);
     });
     it('common', function() {
-      const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND', '--stack-events', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
+      const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--suspend-scheduled-actions', 'false', '--template-url', 'url', '--parameters', 'ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value', '--capabilities', 'CAPABILITY_NAMED_IAM', 'CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND', '--stack-events', '--resource-types', 'type1', 'type2', '--role-arn', 'arn', '--stack-policy-url', 'url', '--notification-arns', 'arn1', 'arn2']);
       assert.equal(argv['stack-name'], 'name');
       assert.equal(argv['template-url'], 'url');
       assert.deepEqual(argv['parameters'], ['ParameterKey=key,UsePreviousValue=true', 'ParameterKey=key,ParameterValue=value']);
@@ -27,6 +28,7 @@ describe('arg', function() {
       assert.equal(argv['stack-policy-url'], 'url');
       assert.deepEqual(argv['notification-arns'], ['arn1', 'arn2']);
       assert.equal(argv['stack-events'], true);
+      assert.equal(argv['suspend-scheduled-actions'], false);
     });
     describe('create', function() {
       it('create', function() {
@@ -56,6 +58,21 @@ describe('arg', function() {
         const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--no-disable-rollback']);
         assert.equal(argv['stack-name'], 'name');
         assert.equal(argv['disable-rollback'], false);
+      });
+      it('--suspend-scheduled-actions', function() {
+        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--suspend-scheduled-actions']);
+        assert.equal(argv['stack-name'], 'name');
+        assert.equal(argv['suspend-scheduled-actions'], true);
+      });
+      it('--suspend-scheduled-actions is set to false', function() {
+        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name', '--suspend-scheduled-actions', 'false']);
+        assert.equal(argv['stack-name'], 'name');
+        assert.equal(argv['suspend-scheduled-actions'], false);
+      });
+      it('--suspend-scheduled-actions is set to true without argument', function() {
+        const argv = cliopts(['/node', 'index.js', '--stack-name', 'name']);
+        assert.equal(argv['stack-name'], 'name');
+        assert.equal(argv['suspend-scheduled-actions'], true);
       });
     });
     describe('update', function() {

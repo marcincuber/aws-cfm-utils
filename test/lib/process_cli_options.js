@@ -341,6 +341,29 @@ describe('processopts', function() {
         assert.deepEqual(argv.stackEvents, false);
       });
     });
+    describe('suspend-scheduled-actions', function() {
+      it('handles as args with true', function() {
+        const argv = processopts({
+          'suspend-scheduled-actions': true,
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.suspendScheduledActions, true);
+      });
+      it('handles as args with false', function() {
+        const argv = processopts({
+          'suspend-scheduled-actions': false,
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.suspendScheduledActions, false);
+      });
+      it('handles as empty', function() {
+        const argv = processopts({
+          'suspend-scheduled-actions': '',
+          'stack-name': 'name'
+        });
+        assert.deepEqual(argv.suspendScheduledActions, false);
+      });
+    });
     describe('refreshRate', function() {
       it('handles as positive int', function() {
         const argv = processopts({

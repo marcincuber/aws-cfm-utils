@@ -42,6 +42,7 @@ const awsClient = async (args) => {
     cloudformation: '2010-05-15'
   };
 
+  let asg, cfm;
   const options = {};
 
   if (process.env.AWS_DEFAULT_REGION !== undefined && process.env.AWS_REGION === undefined) {
@@ -72,8 +73,11 @@ const awsClient = async (args) => {
   }
 
   try {
-    const asg = await new AWS.AutoScaling(options);
-    const cfm = await new AWS.CloudFormation(options);
+    if (args.suspendScheduledActions) {
+      asg = await new AWS.AutoScaling(options);
+    }
+    cfm = await new AWS.CloudFormation(options);
+    
     return {asgClient: asg, cfmClient: cfm};
   }
   catch (err) {

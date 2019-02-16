@@ -88,6 +88,7 @@ Version: aws-cfm-utils --version
     --stack-policy-during-update-body                                                               [string]
     --stack-policy-during-update-url                                                                [string]
     --enable-termination-protection                                                                [boolean]
+    --suspend-scheduled-actions                                                    [boolean] [default: true]
     --stack-events                                                                                 [boolean]
     --refresh-rate                                                                    [number] [default: 15]
     -v, --version                                                Show version number               [boolean]
