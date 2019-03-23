@@ -11,7 +11,8 @@ const { processopts } = require('./lib/process_cli_options.js');
 const { describestack } = require('./helpers/cfm/cfm_describe_stack.js'); //describestack(cfm, stackname)
 const { deletestack } = require('./helpers/cfm/cfm_delete_stack.js'); //deletestack(cfm, stackname)
 const { createstack } = require('./helpers/cfm/cfm_create_stack.js'); //createstack(cfm, args)
-const { updatestack } = require('./helpers/cfm/cfm_update_stack.js'); //updatestack(cfm, args)
+const { updatestack } = require('./helpers/cfm/cfm_update_stack.js'); //updatestack(asg, cfm, args)
+const { validate } = require('./helpers/cfm/cfm_validate.js'); //validate(cfm, args)
 
 require('dotenv').config();
 
@@ -140,6 +141,7 @@ const args = processopts(cliopts(input_args));
 
 (async function() {
   const {asgClient, cfmClient} = await awsClient(args);
+  await validate(cfmClient, args);
   await prexit(cfmClient, args.stackName);
   await main(asgClient, cfmClient, args);
 })();
