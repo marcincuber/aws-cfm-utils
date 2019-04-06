@@ -1,6 +1,6 @@
 {
   "name": "aws-cfm-utils",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "AWS utils to deploy cloudformation stack/templates",
   "main": "index.js",
   "keywords": [
@@ -37,7 +37,7 @@
     "dotenv": "^7.0.0",
     "inquirer": "^6.2.2",
     "proxy-agent": "^3.0.3",
-    "yargs": "^13.2.0"
+    "yargs": "^13.2.2"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
