@@ -1,6 +1,6 @@
 {
   "name": "aws-cfm-utils",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "AWS utils to deploy cloudformation stack/templates",
   "main": "index.js",
   "keywords": [
@@ -34,10 +34,10 @@
   "dependencies": {
     "aws-sdk": "^2.400.0",
     "console.table": "^0.10.0",
-    "dotenv": "^6.2.0",
+    "dotenv": "^7.0.0",
     "inquirer": "^6.2.2",
     "proxy-agent": "^3.0.3",
-    "yargs": "^13.2.0"
+    "yargs": "^13.2.2"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
@@ -48,7 +48,7 @@
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^4.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.2",
     "sinon": "^7.2.3"
   }
 }
