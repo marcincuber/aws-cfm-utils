@@ -27,7 +27,9 @@
     "lint:fix": "eslint --fix .",
     "test": "make mocha",
     "coverage": "make -B coverage",
-    "report-coverage": "cat ./coverage/lcov.info"
+    "report-coverage": "cat ./coverage/lcov.info",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Marcin Cuber <marcincuber@hotmail.com>",
   "license": "MIT",
@@ -37,7 +39,8 @@
     "dotenv": "^7.0.0",
     "inquirer": "^6.2.2",
     "proxy-agent": "^3.0.3",
-    "yargs": "^13.2.2"
+    "yargs": "^13.2.2",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
@@ -50,5 +53,6 @@
     "istanbul": "^0.4.5",
     "mocha": "^6.0.2",
     "sinon": "^7.2.3"
-  }
+  },
+  "snyk": true
 }
