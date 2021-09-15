@@ -35,9 +35,9 @@
     "aws-sdk": "^2.553.0",
     "console.table": "^0.10.0",
     "dotenv": "^8.2.0",
-    "inquirer": "^7.0.0",
+    "inquirer": "^7.0.5",
     "proxy-agent": "^3.1.0",
-    "yargs": "^14.2.0"
+    "yargs": "^15.0.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.7",
